@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Money Tycoon – Race to a Trillion</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1b2340 0, #050712 55%, #02030a 100%);
+      color: #e6ebff;
+    }
+
+    #pageTitle {
+      text-align: center;
+      padding: 10px 0 4px 0;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #dbe4ff;
+      text-shadow: 0 0 18px rgba(91,157,255,0.7);
+    }
+
+    /* Hidden until Start is pressed */
+    #app {
+      display: none;
+      grid-template-columns: 320px 1.2fr 440px;
+      gap: 16px;
+      padding: 8px 16px 16px 16px;
+      height: calc(100vh - 52px);
+      filter: blur(0);
+      transition: filter 0.2s ease-out;
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, #15182c 0, #050712 60%, #02030a 100%);
+      border-radius: 16px;
+      border: 1.5px solid #2f3656;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .panel-title {
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #b5c6ff;
+    }
+    .panel-subtitle {
+      font-size: 13px;
+      color: #8b93d0;
+    }
+
+    .tab-row {
+      display: inline-flex;
+      gap: 10px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+    .tab {
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1.5px solid #323a5a;
+      background: radial-gradient(circle at top, #050712 0, #050712 60%, #02030a 100%);
+      color: #a4addc;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+    .tab:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.7);
+      border-color: #4b8dff;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, #4b8dff, #2f63d0);
+      color: #fff;
+      border-color: #4b8dff;
+      box-shadow: 0 14px 32px rgba(75,141,255,0.55);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #4b8dff, #2f63d0);
+      border: none;
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 550;
+      letter-spacing: 0.03em;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+      box-shadow: 0 10px 26px rgba(75,141,255,0.45);
+      white-space: nowrap;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(75,141,255,0.6);
+      background: linear-gradient(135deg, #5b9dff, #3a6fe0);
+    }
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+    }
+    .btn.secondary {
+      background: radial-gradient(circle at top, #343b63 0, #252b4a 60%, #181c33 100%);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.55);
+    }
+    .btn.secondary:hover {
+      background: radial-gradient(circle at top, #3f4774 0, #2f3556 60%, #181c33 100%);
+    }
+    .btn.small {
+      padding: 5px 12px;
+      font-size: 13px;
+    }
+
+    .stat {
+      margin-bottom: 4px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .stat-label {
+      color: #9aa2d8;
+    }
+    .stat-value {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+    .negative { color: #ff6b6b; }
+    .positive { color: #5ae08c; }
+    .small { font-size: 12px; color: #9aa2d8; }
+
+    #clickAreaWrapper {
+      position: relative;
+      margin: 10px 0 12px 0;
+    }
+    #clickButton {
+      width: 100%;
+      height: 72px;
+      font-size: 17px;
+      border-radius: 999px;
+      position: relative;
+      z-index: 1;
+    }
+    #clickFloatLayer {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .click-float {
+      position: absolute;
+      font-size: 14px;
+      font-weight: 600;
+      color: #5ae08c;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+      transform: translate(-50%, -50%);
+      animation: floatUp 0.7s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translate(-50%, -50%); }
+      100% { opacity: 0; transform: translate(-50%, -82px); }
+    }
+
+    #middleScroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+      margin-top: 4px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 650;
+      color: #b5c6ff;
+      margin: 8px 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .card {
+      background: radial-gradient(circle at top left, #262f57 0, #151a33 55%, #101426 100%);
+      border-radius: 12px;
+      border: 1.5px solid #323a5a;
+      padding: 9px 11px;
+      margin-bottom: 8px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.6);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, border 0.12s ease;
+    }
+    .card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+      border-color: #4b8dff;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .card-sub {
+      font-size: 12px;
+      color: #9aa2d8;
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .stock-row {
+      background: radial-gradient(circle at top left, #262f57 0, #151a33 55%, #101426 100%);
+      border-radius: 12px;
+      border: 1.5px solid #323a5a;
+      padding: 7px 9px;
+      margin-bottom: 7px;
+      font-size: 13px;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 1.6fr 1.4fr 1.6fr;
+      gap: 4px;
+      align-items: center;
+      transition: border 0.12s ease, background 0.12s ease, transform 0.08s ease, box-shadow 0.12s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .stock-row:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+    }
+    .stock-row.selected {
+      background: radial-gradient(circle at top left, #31437a 0, #1a2140 55%, #101426 100%);
+      border-color: #5b9dff;
+      box-shadow: 0 20px 46px rgba(75,141,255,0.55);
+    }
+    .stock-buttons {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+    .pl-line {
+      font-size: 12px;
+      margin-top: 2px;
+      grid-column: 1 / 4;
+    }
+
+    #assetListScroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+      margin-top: 4px;
+    }
+
+    #winModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 15, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #winModalInner {
+      background: radial-gradient(circle at top, #1f2750 0, #050712 70%);
+      border-radius: 20px;
+      border: 1.5px solid #5b9dff;
+      padding: 28px 32px;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.85);
+      color: #e6ebff;
+      animation: popIn 0.4s ease-out;
+    }
+    #winModalInner h1 {
+      margin: 0 0 10px 0;
+      font-size: 32px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    #winModalInner p {
+      margin: 0 0 18px 0;
+      font-size: 16px;
+      color: #c3cffc;
+    }
+    #winModalInner .highlight {
+      font-size: 18px;
+      color: #5ae08c;
+      margin-bottom: 10px;
+    }
+    #winTimeText {
+      font-size: 14px;
+      color: #b7c5ff;
+      margin-bottom: 18px;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    #winModalGlow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(90,224,140,0.18) 0, transparent 55%);
+      pointer-events: none;
+    }
+
+    #chartModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 15, 0.65);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out;
+      z-index: 9000;
+    }
+    #chartModal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #chartModalInner {
+      width: min(1100px, 96vw);
+      height: 70vh;
+      background: radial-gradient(circle at top, #1b2340 0, #050712 70%);
+      border-radius: 20px 20px 0 0;
+      border: 1.5px solid #4b8dff;
+      box-shadow: 0 -18px 50px rgba(0,0,0,0.85);
+      padding: 14px 16px 16px 16px;
+      transform: translateY(100%);
+      transition: transform 0.25s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #chartModal.open #chartModalInner {
+      transform: translateY(0);
+    }
+    #chartModalHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #chartModalTitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: #dbe4ff;
+    }
+    #chartModalClose {
+      background: transparent;
+      border: none;
+      color: #9aa2d8;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    #chartModalClose:hover {
+      color: #ffffff;
+    }
+    #chartModalInfoRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #9aa2d8;
+    }
+    #chartModalPill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(80, 120, 255, 0.16);
+      font-size: 11px;
+      color: #b7c5ff;
+      border: 1px solid rgba(91,157,255,0.4);
+    }
+    #chartModalCanvas {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      background: #050712;
+      border-radius: 10px;
+      border: 1px solid #252b45;
+      display: block;
+    }
+    #chartModalControls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    #chartModalControlsLeft {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* Intro screen as separate first page */
+    #introOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, #1b2340 0, #050712 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+    #introInner {
+      background: radial-gradient(circle at top, #1f2750 0, #050712 70%);
+      border-radius: 20px;
+      border: 1.5px solid #4b8dff;
+      padding: 24px 28px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.85);
+      color: #e6ebff;
+      text-align: center;
+    }
+    #introInner h1 {
+      margin: 0 0 10px 0;
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    #middleScroll,
+    #assetListScroll,
+    #achievementsList {
+    scrollbar-width: none; /* Firefox */
+    }
+
+    #middleScroll::-webkit-scrollbar,
+    #assetListScroll::-webkit-scrollbar,
+    #achievementsList::-webkit-scrollbar {
+    display: none; /* Chrome, Edge, Safari */
+    }
+
+    #introInner p {
+      margin: 4px 0 14px 0;
+      font-size: 14px;
+      color: #c3cffc;
+    }
+    #empireNameInput {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #323a5a;
+      background: #050712;
+      color: #e6ebff;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    #achievementsList {
+      margin-top: 6px;
+      max-height: 120px;
+      overflow-y: auto;
+      padding-right: 4px;
+      font-size: 12px;
+    }
+    .achievement-item {
+      padding: 3px 6px;
+      border-radius: 8px;
+      background: rgba(75,141,255,0.12);
+      border: 1px solid rgba(75,141,255,0.4);
+      margin-bottom: 4px;
+      text-align: left;
+    }
+    .achievement-item span {
+      font-weight: 600;
+      color: #dbe4ff;
+    }
+
+    #eventBanner {
+      position: fixed;
+      left: 50%;
+      top: 12px;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at top, #7b1f2a 0, #3b0b12 70%);
+      color: #ffe6ea;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid #ff6b6b;
+      font-size: 13px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      display: none;
+      z-index: 8000;
+    }
+  </style>
+</head>
+<body>
+  <!-- FULL GAME PAGE NAVBAR -->
+
+
+<div id="pageTitle">RACE TO 1 TRILLION</div>
+
+<!-- First page / intro screen -->
+<div id="introOverlay">
+  <div id="introInner">
+    <h1>RACE TO 1 TRILLION</h1>
+    <p>Build your empire, manage risk, and see how fast you can hit $1,000,000,000 net worth.</p>
+    <p style="margin-top:8px;">Name your empire:</p>
+    <input id="empireNameInput" type="text" placeholder="e.g. Bob's Empire">
+    <button id="startGameBtn" class="btn" style="width:100%; margin-top:8px;">Start</button>
+    <p style="margin-top:10px; font-size:11px; color:#9aa2d8;">
+      The game only runs while this tab is active. No idle empires in the background.
+    </p>
+  </div>
+</div>
+
+<div id="eventBanner"></div>
+
+<!-- Game UI (hidden until Start) -->
+<div id="app">
+  <!-- LEFT PANEL -->
+  <div id="leftPanel" class="panel">
+    <div class="panel-header">
+      <div class="panel-title" id="playerTitle">Your Empire</div>
+      <div class="panel-subtitle">
+        Race to $1T • <span id="timerDisplay">00:00</span>
+      </div>
+    </div>
+    <div class="tab-row">
+      <button class="tab active" id="leftTabYou">You</button>
+      <button class="tab" id="leftTabBank">Bank</button>
+    </div>
+
+    <div id="leftYouView">
+      <div id="stats">
+        <div class="stat"><span class="stat-label">Cash</span><span class="stat-value" id="cashStat"></span></div>
+        <div class="stat"><span class="stat-label">Net Worth</span><span class="stat-value" id="netWorthStat"></span></div>
+        <div class="stat"><span class="stat-label">Income / sec</span><span class="stat-value" id="incomeStat"></span></div>
+        <div class="stat"><span class="stat-label">• Businesses</span><span class="stat-value" id="bizIncomeStat"></span></div>
+        <div class="stat"><span class="stat-label">• Employees (synergy)</span><span class="stat-value" id="empIncomeStat"></span></div>
+        <div class="stat"><span class="stat-label">• Assets (dividends)</span><span class="stat-value" id="assetIncomeStat"></span></div>
+        <div class="stat"><span class="stat-label">Debt</span><span class="stat-value" id="debtStat"></span></div>
+        <div style="margin-top:10px;">
+  <div class="section-title">Stock Buy Amount</div>
+  <input id="bulkBuyInput" 
+         type="number" 
+         min="1" 
+         value="1"
+         style="width: 100%; padding: 6px; border-radius: 8px; background:#050712; color:#e6ebff; border:1px solid #323a5a;">
+  <div class="small" style="margin-top:4px;">This sets how many shares you buy at once.</div>
+</div>
+
+      </div>
+
+      <div id="clickAreaWrapper">
+        <button id="clickButton" class="btn">Earn +$ per click</button>
+        <div id="clickFloatLayer"></div>
+      </div>
+      <div class="small">
+        Manual clicking is strongest early game. Later, your empire, employees, and leverage run themselves.
+      </div>
+
+      <div style="margin-top:10px;">
+        <div class="section-title" style="margin-top:6px;">Assets</div>
+        <div class="card" id="assetsSummaryCard">
+          <div class="card-row">
+            <span>Business value</span>
+            <span id="assetBizValue"></span>
+          </div>
+          <div class="card-row">
+            <span>Employee synergy power</span>
+            <span id="assetEmpValue"></span>
+          </div>
+          <div class="card-row">
+            <span>Stock value</span>
+            <span id="assetStockValue"></span>
+          </div>
+          <div class="card-row">
+            <span>Crypto value</span>
+            <span id="assetCryptoValue"></span>
+          </div>
+          <div class="card-row">
+            <span>Total asset income / sec</span>
+            <span id="assetTotalIncome"></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:6px;">
+        <div class="section-title" style="margin-top:4px;">Achievements</div>
+        <div id="achievementsList"></div>
+      </div>
+    </div>
+
+    <div id="leftBankView" style="display:none; margin-top:4px;">
+      <div class="section-title">Bank & Credit</div>
+      <div class="stat">
+        <span class="stat-label">Interest</span>
+        <span class="stat-value" id="interestStat"></span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Eligible loan</span>
+        <span class="stat-value" id="eligibleLoanStat"></span>
+      </div>
+      <div class="small">Banks lend against your net worth and existing debt. High leverage = no new credit.</div>
+      <div style="margin-top: 10px; display:flex; gap:8px; align-items:center;">
+        <input id="loanAmountInput" type="number" min="0" step="1000"
+               style="flex:1; padding:7px 10px; border-radius:999px; border:1px solid #323a5a; background:#050712; color:#e6ebff; font-size:13px;"
+               placeholder="Loan amount">
+        <button id="loanTakeBtn" class="btn secondary small">Take loan</button>
+      </div>
+      <div style="margin-top: 8px; display:flex; gap:8px;">
+        <button id="loanRepayBtn" class="btn secondary small" style="flex:1;">Repay $1,000</button>
+        <button id="loanRepayAllBtn" class="btn secondary small" style="flex:1;">Repay all</button>
+      </div>
+      <div class="small" id="loanHint" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- MIDDLE PANEL -->
+  <div id="middlePanel" class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Operations</div>
+      <div class="panel-subtitle">Grow your empire</div>
+    </div>
+    <div class="tab-row">
+      <button class="tab active" id="midTabBiz">Businesses</button>
+      <button class="tab" id="midTabEmp">Employees</button>
+      <button class="tab" id="midTabUpg">Upgrades</button>
+    </div>
+    <div id="middleScroll">
+      <div id="businessSection">
+        <div class="section-title">Businesses</div>
+        <div id="businessList"></div>
+      </div>
+      <div id="employeeSection" style="display:none;">
+        <div class="section-title">Employees</div>
+        <div class="small" style="margin-bottom:4px;">
+          Employees boost business income, unlock automation, and soften market crashes.
+        </div>
+        <div id="employeeList"></div>
+      </div>
+      <div id="upgradeSection" style="display:none;">
+        <div class="section-title">Upgrades</div>
+        <div class="small" style="margin-bottom:4px;">
+          Long upgrade tree, scaling into the billions. Stack multipliers like a true clicker game.
+        </div>
+        <div id="upgradeList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="rightPanel" class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Markets</div>
+      <div class="panel-subtitle">Risk & reward</div>
+    </div>
+    <div class="tab-row">
+      <button class="tab active" id="rightTabStocks">Stocks</button>
+      <button class="tab" id="rightTabCrypto">Crypto</button>
+    </div>
+    <div id="assetListScroll">
+      <div id="stockList"></div>
+    </div>
+  </div>
+</div>
+
+<div id="winModal">
+  <div id="winModalGlow"></div>
+  <div id="winModalInner">
+    <h1>YOU WON</h1>
+    <div class="highlight">You hit $1,000,000,000,000 net worth.</div>
+    <div id="winTimeText"></div>
+    <p>You raced to a Trillion and built a serious empire. Want to run it back or keep going?</p>
+    <div style="display:flex; gap:8px; justify-content:center; margin-top:8px;">
+      <button id="winContinueBtn" class="btn secondary">Continue</button>
+      <button id="winRestartBtn" class="btn">Play again</button>
+    </div>
+  </div>
+</div>
+
+<div id="chartModal">
+  <div id="chartModalInner">
+    <div id="chartModalHeader">
+      <div id="chartModalTitle">Asset Chart</div>
+      <button id="chartModalClose" title="Close">✕</button>
+    </div>
+    <div id="chartModalInfoRow">
+      <div id="chartModalInfo">Price & range</div>
+      <div id="chartModalPill">Volatility</div>
+    </div>
+    <div id="chartModalControls">
+      <div id="chartModalControlsLeft"></div>
+      <div id="chartModalControlsRight"></div>
+    </div>
+    <canvas id="chartModalCanvas"></canvas>
+  </div>
+</div>
+<script>
+const leaderboardData = [
+    { game: "Race To A Billion", player: "Alex", time: "12:44" },
+    { game: "Race To A Trillion", player: "Sam", time: "18:22" },
+    { game: "Real Estate Tycoon", player: "Jordan", time: "09:51" },
+    { game: "Bank Fund Tycoon", player: "Chris", time: "14:10" }
+];
+
+document.getElementById("openLeaderboard").onclick = () => {
+    loadLeaderboard();
+    document.getElementById("leaderboardModal").style.display = "flex";
+};
+
+function closeLeaderboard() {
+    document.getElementById("leaderboardModal").style.display = "none";
+}
+
+function loadLeaderboard() {
+    const body = document.getElementById("leaderboardBody");
+    body.innerHTML = "";
+
+    leaderboardData.forEach(entry => {
+        body.innerHTML += `
+            <tr>
+                <td>${entry.game}</td>
+                <td>${entry.player}</td>
+                <td>${entry.time}</td>
+            </tr>
+        `;
+    });
+}
+
+window.onclick = e => {
+    if (e.target === document.getElementById("leaderboardModal")) {
+        closeLeaderboard();
+    }
+};
+</script>
+
+<script>
+  // =============================
+  // CORE GAME STATE
+  // =============================
+
+  let cash = 100.0;
+  let debt = 0.0;
+  let clickValue = 1.0;
+    
+  let activePlaySeconds = 0;
+  let lastActiveTimestamp = null;
+
+  let incomePerSec = 0.0;
+  let incomeBiz = 0.0;
+  let incomeEmp = 0.0;
+  let incomeAssets = 0.0;
+
+  let interestRatePerMinute = 0.08;
+  let interestModifier = 0.0;
+
+  let dividendMultiplier = 1.0;
+
+  const WIN_NET_WORTH = 1_000_000_000_000;
+  let gameWon = false;
+
+  let gameStarted = false;
+  let startTimestamp = null;
+  let elapsedSeconds = 0;
+  let tabActive = true;
+
+  let empireName = "Your Empire";
+
+  let lastEventTime = 0;
+  const EVENT_MIN_INTERVAL = 45;
+  const EVENT_NET_WORTH_THRESHOLD = 40_000_000;
+
+  let autoClickEnabled = false;
+  let autoBuyBusinessEnabled = false;
+  let autoReinvestEnabled = false;
+  let autoLoanRepayEnabled = false;
+
+  let eventMitigationFactor = 0.0;
+
+  const businesses = [
+    { name: "Lemonade Stand", baseCost: 50, cost: 50, income: 1, owned: 0 },
+    { name: "Food Truck", baseCost: 300, cost: 300, income: 6, owned: 0 },
+    { name: "Corner Shop", baseCost: 1000, cost: 1000, income: 15, owned: 0 },
+    { name: "Local Café", baseCost: 4000, cost: 4000, income: 45, owned: 0 },
+    { name: "Small Restaurant", baseCost: 20000, cost: 20000, income: 180, owned: 0 },
+    { name: "Retail Store", baseCost: 80000, cost: 80000, income: 650, owned: 0 },
+    { name: "Logistics Company", baseCost: 300000, cost: 300000, income: 2400, owned: 0 },
+    { name: "Software Company", baseCost: 1_200_000, cost: 1_200_000, income: 9000, owned: 0 },
+    { name: "Data Center", baseCost: 5_000_000, cost: 5_000_000, income: 32_000, owned: 0 },
+    { name: "National Franchise", baseCost: 50_000_000, cost: 50_000_000, income: 220_000, owned: 0 },
+    { name: "Investment Bank", baseCost: 500_000_000, cost: 500_000_000, income: 1_800_000, owned: 0 },
+    { name: "Global Conglomerate", baseCost: 10_000_000_000, cost: 10_000_000_000, income: 40_000_000, owned: 0 }
+  ];
+
+  const employees = [
+    { name: "Intern", baseCost: 200, cost: 200, synergy: 0.01, automation: [], protection: 0.0, owned: 0 },
+    { name: "Sales Rep", baseCost: 1500, cost: 1500, synergy: 0.03, automation: [], protection: 0.0, owned: 0 },
+    { name: "Engineer", baseCost: 8000, cost: 8000, synergy: 0.05, automation: [], protection: 0.02, owned: 0 },
+    { name: "Manager", baseCost: 30000, cost: 30000, synergy: 0.08, automation: ["autoClick"], protection: 0.03, owned: 0 },
+    { name: "Director", baseCost: 120000, cost: 120000, synergy: 0.12, automation: ["autoBuyBiz"], protection: 0.05, owned: 0 },
+    { name: "VP of Growth", baseCost: 600000, cost: 600000, synergy: 0.18, automation: ["autoReinvest"], protection: 0.07, owned: 0 },
+    { name: "Chief Strategy Officer", baseCost: 2_500_000, cost: 2_500_000, synergy: 0.25, automation: ["autoLoanRepay"], protection: 0.1, owned: 0 }
+  ];
+
+  const upgrades = [
+    { name: "Better Mouse", desc: "+1 per click", cost: 100, applied: false, type: "click_add", value: 1 },
+    { name: "Ergonomic Mouse", desc: "+3 per click", cost: 400, applied: false, type: "click_add", value: 3 },
+    { name: "Click Macro", desc: "x2 click power", cost: 2_000, applied: false, type: "click_mult", value: 2 },
+    { name: "Hyper Clicker", desc: "x5 click power", cost: 25_000, applied: false, type: "click_mult", value: 5 },
+
+    { name: "Business Coaching I", desc: "+25% business income", cost: 5_000, applied: false, type: "biz_mult", value: 0.25 },
+    { name: "Business Coaching II", desc: "+50% business income", cost: 50_000, applied: false, type: "biz_mult", value: 0.5 },
+    { name: "Business Coaching III", desc: "x2 business income", cost: 500_000, applied: false, type: "biz_mult_factor", value: 2 },
+
+    { name: "Leadership Training I", desc: "+25% employee synergy", cost: 20_000, applied: false, type: "emp_synergy_mult", value: 0.25 },
+    { name: "Leadership Training II", desc: "+50% employee synergy", cost: 200_000, applied: false, type: "emp_synergy_mult", value: 0.5 },
+    { name: "Leadership Training III", desc: "x2 employee synergy", cost: 2_000_000, applied: false, type: "emp_synergy_factor", value: 2 },
+
+    { name: "Dividend Analyst I", desc: "+25% dividends", cost: 30_000, applied: false, type: "dividend_mult", value: 0.25 },
+    { name: "Dividend Analyst II", desc: "+50% dividends", cost: 300_000, applied: false, type: "dividend_mult", value: 0.5 },
+    { name: "Dividend Analyst III", desc: "x2 dividends", cost: 3_000_000, applied: false, type: "dividend_factor", value: 2 },
+
+    { name: "Process Automation", desc: "+25% all income", cost: 500_000, applied: false, type: "global_mult", value: 0.25 },
+    { name: "AI Optimization", desc: "+50% all income", cost: 5_000_000, applied: false, type: "global_mult", value: 0.5 },
+    { name: "Empire Engine", desc: "x2 all income", cost: 50_000_000, applied: false, type: "global_factor", value: 2 },
+
+    { name: "Credit Optimization", desc: "-2% interest", cost: 2500, applied: false, type: "interest", value: -0.02 },
+    { name: "Risk Desk", desc: "Events hit 25% softer", cost: 1_000_000, applied: false, type: "event_mitigate_add", value: 0.25 },
+    { name: "Global Hedge Fund", desc: "Events hit 50% softer", cost: 50_000_000, applied: false, type: "event_mitigate_add", value: 0.5 },
+
+    { name: "Billionaire Blueprint", desc: "x2 all income (late game)", cost: 1_000_000_000, applied: false, type: "global_factor", value: 2 }
+  ];
+
+  const stocks = [
+    { name: "NVDA", basePrice: 900, price: 900, vol: 0.045, divYield: 0.002, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "GOOG", basePrice: 140, price: 140, vol: 0.03, divYield: 0.005, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "AMZN", basePrice: 180, price: 180, vol: 0.035, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "INTC", basePrice: 35, price: 35, vol: 0.03, divYield: 0.03, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "AMD", basePrice: 160, price: 160, vol: 0.04, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "MSFT", basePrice: 420, price: 420, vol: 0.025, divYield: 0.01, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "META", basePrice: 500, price: 500, vol: 0.04, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "TSLA", basePrice: 200, price: 200, vol: 0.06, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "AAPL", basePrice: 190, price: 190, vol: 0.025, divYield: 0.005, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "NFLX", basePrice: 600, price: 600, vol: 0.05, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false }
+  ];
+
+  const cryptos = [
+    { name: "BTC", basePrice: 60000, price: 60000, vol: 0.08, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "ETH", basePrice: 3000, price: 3000, vol: 0.07, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "SOL", basePrice: 150, price: 150, vol: 0.09, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "XRP", basePrice: 0.6, price: 0.6, vol: 0.08, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "DOGE", basePrice: 0.2, price: 0.2, vol: 0.1, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "ADA", basePrice: 0.8, price: 0.8, vol: 0.08, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "BNB", basePrice: 400, price: 400, vol: 0.06, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "AVAX", basePrice: 50, price: 50, vol: 0.09, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "MATIC", basePrice: 1.2, price: 1.2, vol: 0.09, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false },
+    { name: "LINK", basePrice: 18, price: 18, vol: 0.08, divYield: 0.0, owned: 0, invested: 0, history: [], reinvest: false }
+  ];
+
+  stocks.forEach(s => { s.history = Array(120).fill(s.price); });
+  cryptos.forEach(c => { c.history = Array(120).fill(c.price); });
+
+  let selectedMarket = "stocks";
+  let selectedStockIndex = 0;
+  let selectedCryptoIndex = 0;
+
+  const achievements = [
+    { id: "nw_1m", name: "First Million", unlocked: false, check: () => netWorth() >= 1_000_000 },
+    { id: "nw_10m", name: "Eight Figures", unlocked: false, check: () => netWorth() >= 10_000_000 },
+    { id: "nw_100m", name: "Nine Zeros", unlocked: false, check: () => netWorth() >= 100_000_000 },
+    { id: "nw_1b", name: "Billionaire", unlocked: false, check: () => netWorth() >= 1_000_000_000 },
+    { id: "first_stock", name: "Market Entry", unlocked: false, check: () => stocks.some(s => s.owned > 0) },
+    { id: "first_crypto", name: "On-chain", unlocked: false, check: () => cryptos.some(c => c.owned > 0) },
+    { id: "no_debt", name: "Debt Free", unlocked: false, check: () => debt === 0 && netWorth() > 10000 },
+    { id: "loan_user", name: "Leveraged", unlocked: false, check: () => debt > 0 }
+  ];
+  const unlockedAchievements = [];
+
+  const cashStat = document.getElementById("cashStat");
+  const netWorthStat = document.getElementById("netWorthStat");
+  const incomeStat = document.getElementById("incomeStat");
+  const bizIncomeStat = document.getElementById("bizIncomeStat");
+  const empIncomeStat = document.getElementById("empIncomeStat");
+  const assetIncomeStat = document.getElementById("assetIncomeStat");
+  const debtStat = document.getElementById("debtStat");
+  const interestStat = document.getElementById("interestStat");
+  const eligibleLoanStat = document.getElementById("eligibleLoanStat");
+  const loanHint = document.getElementById("loanHint");
+
+  const assetBizValue = document.getElementById("assetBizValue");
+  const assetEmpValue = document.getElementById("assetEmpValue");
+  const assetStockValue = document.getElementById("assetStockValue");
+  const assetCryptoValue = document.getElementById("assetCryptoValue");
+  const assetTotalIncome = document.getElementById("assetTotalIncome");
+
+  const achievementsListEl = document.getElementById("achievementsList");
+
+  const clickButton = document.getElementById("clickButton");
+  const clickFloatLayer = document.getElementById("clickFloatLayer");
+  const loanAmountInput = document.getElementById("loanAmountInput");
+  const loanTakeBtn = document.getElementById("loanTakeBtn");
+  const loanRepayBtn = document.getElementById("loanRepayBtn");
+  const loanRepayAllBtn = document.getElementById("loanRepayAllBtn");
+
+  const businessListEl = document.getElementById("businessList");
+  const employeeListEl = document.getElementById("employeeList");
+  const upgradeListEl = document.getElementById("upgradeList");
+  const stockListEl = document.getElementById("stockList");
+
+  const leftTabYou = document.getElementById("leftTabYou");
+  const leftTabBank = document.getElementById("leftTabBank");
+  const leftYouView = document.getElementById("leftYouView");
+  const leftBankView = document.getElementById("leftBankView");
+
+  const midTabBiz = document.getElementById("midTabBiz");
+  const midTabEmp = document.getElementById("midTabEmp");
+  const midTabUpg = document.getElementById("midTabUpg");
+  const businessSection = document.getElementById("businessSection");
+  const employeeSection = document.getElementById("employeeSection");
+  const upgradeSection = document.getElementById("upgradeSection");
+
+  const rightTabStocks = document.getElementById("rightTabStocks");
+  const rightTabCrypto = document.getElementById("rightTabCrypto");
+
+  const winModal = document.getElementById("winModal");
+  const winRestartBtn = document.getElementById("winRestartBtn");
+  const winContinueBtn = document.getElementById("winContinueBtn");
+  const winTimeText = document.getElementById("winTimeText");
+
+  const chartModal = document.getElementById("chartModal");
+  const chartModalCanvas = document.getElementById("chartModalCanvas");
+  const chartModalTitle = document.getElementById("chartModalTitle");
+  const chartModalInfo = document.getElementById("chartModalInfo");
+  const chartModalPill = document.getElementById("chartModalPill");
+  const chartModalClose = document.getElementById("chartModalClose");
+  const chartModalControlsLeft = document.getElementById("chartModalControlsLeft");
+  const chartModalControlsRight = document.getElementById("chartModalControlsRight");
+  const chartCtx = chartModalCanvas.getContext("2d");
+
+  const introOverlay = document.getElementById("introOverlay");
+  const startGameBtn = document.getElementById("startGameBtn");
+  const empireNameInput = document.getElementById("empireNameInput");
+  const playerTitle = document.getElementById("playerTitle");
+  const timerDisplay = document.getElementById("timerDisplay");
+
+  const eventBanner = document.getElementById("eventBanner");
+
+  function formatMoney(v) {
+    if (Math.abs(v) >= 1_000_000_000) return (v / 1_000_000_000).toFixed(2) + "B";
+    if (Math.abs(v) >= 1_000_000) return (v / 1_000_000).toFixed(2) + "M";
+    if (Math.abs(v) >= 1_000) return (v / 1_000).toFixed(2) + "K";
+    return v.toFixed(2);
+  }
+
+  function netWorth() {
+    const stockValue = stocks.reduce((sum, s) => sum + s.owned * s.price, 0);
+    const cryptoValue = cryptos.reduce((sum, c) => sum + c.owned * c.price, 0);
+    const bizValue = businesses.reduce((sum, b) => sum + b.owned * b.cost * 0.6, 0);
+    const empValue = employees.reduce((sum, e) => sum + e.owned * e.cost * 0.4, 0);
+    return cash + stockValue + cryptoValue + bizValue + empValue - debt;
+  }
+
+  function computeAssetValues() {
+    const stockValue = stocks.reduce((sum, s) => sum + s.owned * s.price, 0);
+    const cryptoValue = cryptos.reduce((sum, c) => sum + c.owned * c.price, 0);
+    const bizValue = businesses.reduce((sum, b) => sum + b.owned * b.cost * 0.6, 0);
+    const empValue = employees.reduce((sum, e) => sum + e.owned * e.cost * 0.4, 0);
+    return { stockValue, cryptoValue, bizValue, empValue };
+  }
+
+  function getDividendPerSec(asset) {
+    if (asset.owned <= 0 || asset.divYield <= 0) return 0;
+    const yearly = asset.price * asset.divYield * asset.owned * dividendMultiplier;
+    // 1/4 of annual dividends per second
+    return yearly / 4;
+  }
+
+  let employeeSynergyMultiplier = 1.0;
+
+  function recalcEmployeeEffects() {
+    let baseSynergy = 0;
+    let protection = 0;
+    autoClickEnabled = false;
+    autoBuyBusinessEnabled = false;
+    autoReinvestEnabled = false;
+    autoLoanRepayEnabled = false;
+
+    employees.forEach(e => {
+      if (e.owned > 0) {
+        baseSynergy += e.synergy * e.owned;
+        protection += e.protection * e.owned;
+        if (e.automation.includes("autoClick")) autoClickEnabled = true;
+        if (e.automation.includes("autoBuyBiz")) autoBuyBusinessEnabled = true;
+        if (e.automation.includes("autoReinvest")) autoReinvestEnabled = true;
+        if (e.automation.includes("autoLoanRepay")) autoLoanRepayEnabled = true;
+      }
+    });
+
+    const synergyFactor = 1 + baseSynergy;
+    employeeSynergyMultiplier = synergyFactor;
+    eventMitigationFactor = Math.min(0.8, protection);
+
+    incomeEmp = incomeBiz * (employeeSynergyMultiplier - 1);
+  }
+
+  function recalcIncome() {
+    incomeBiz = 0;
+    businesses.forEach(b => {
+      incomeBiz += b.owned * b.income;
+    });
+
+    recalcEmployeeEffects();
+
+    let incomeDiv = 0;
+    function divIncome(assetArr) {
+      let total = 0;
+      assetArr.forEach(a => {
+        total += getDividendPerSec(a);
+      });
+      return total;
+    }
+    incomeDiv += divIncome(stocks);
+    incomeDiv += divIncome(cryptos);
+
+    incomeAssets = incomeDiv;
+    incomePerSec = incomeBiz * employeeSynergyMultiplier + incomeAssets;
+  }
+
+  function eligibleLoan() {
+    const nw = netWorth();
+    if (nw <= 0) return 0;
+    // If you're in heavy debt (>= 50M), banks won't lend more
+    if (debt >= 50_000_000) return 0;
+    if (debt > nw * 0.6) return 0;
+    const maxTotal = nw * 0.5;
+    return Math.max(0, maxTotal - debt);
+  }
+
+  function updateAssetsSummary() {
+    const { stockValue, cryptoValue, bizValue, empValue } = computeAssetValues();
+    assetBizValue.textContent = "$" + formatMoney(bizValue);
+    assetEmpValue.textContent = "Synergy x" + employeeSynergyMultiplier.toFixed(2);
+    assetStockValue.textContent = "$" + formatMoney(stockValue);
+    assetCryptoValue.textContent = "$" + formatMoney(cryptoValue);
+    const totalAssetIncome = incomeBiz * employeeSynergyMultiplier + incomeAssets;
+    assetTotalIncome.textContent = "$" + formatMoney(totalAssetIncome);
+  }
+
+  function updateStats() {
+    cashStat.textContent = "$" + formatMoney(cash);
+    netWorthStat.textContent = "$" + formatMoney(netWorth());
+    incomeStat.textContent = "$" + formatMoney(incomePerSec);
+    bizIncomeStat.textContent = "$" + formatMoney(incomeBiz);
+    empIncomeStat.textContent = "x" + employeeSynergyMultiplier.toFixed(2);
+    assetIncomeStat.textContent = "$" + formatMoney(incomeAssets);
+    debtStat.textContent = "$" + formatMoney(debt);
+    debtStat.className = "stat-value" + (debt > 0 ? " negative" : "");
+    const effRate = Math.max(0, interestRatePerMinute + interestModifier);
+    interestStat.textContent = (effRate * 100).toFixed(1) + "% / min";
+    eligibleLoanStat.textContent = "$" + formatMoney(eligibleLoan());
+    updateAssetsSummary();
+  }
+
+  function showWinModal() {
+    if (gameWon) return;
+    gameWon = true;
+    winTimeText.textContent = "Time to $1B: " + formatTime(elapsedSeconds);
+    winModal.style.display = "flex";
+  }
+
+  function checkWin() {
+    if (!gameWon && netWorth() >= WIN_NET_WORTH) {
+      unlockAchievementById("nw_1b");
+      showWinModal();
+    }
+  }
+
+  function takeLoan(amount) {
+    if (amount <= 0) return;
+    const eligible = eligibleLoan();
+    if (eligible <= 0) {
+      loanHint.textContent = "Bank: Your leverage is too high. Pay down debt first.";
+      return;
+    }
+    const granted = Math.min(amount, eligible);
+    if (granted <= 0) {
+      loanHint.textContent = "Bank: You're already at your credit limit.";
+      return;
+    }
+    cash += granted;
+    debt += granted;
+    loanHint.textContent = "Bank: Granted loan of $" + formatMoney(granted) + ".";
+  }
+
+  function repayLoan(amount) {
+    const pay = Math.min(amount, cash, debt);
+    if (pay <= 0) {
+      loanHint.textContent = "You need cash to repay.";
+      return;
+    }
+    cash -= pay;
+    debt -= pay;
+    loanHint.textContent = "Repaid $" + formatMoney(pay) + ". Remaining debt: $" + formatMoney(debt) + ".";
+  }
+
+  function applyInterest() {
+    const effRate = Math.max(0, interestRatePerMinute + interestModifier);
+    if (debt <= 0 || effRate <= 0) return;
+    const perSec = effRate / 60;
+    debt += debt * perSec;
+  }
+
+  function updateAssetsPrices(arr) {
+    arr.forEach(a => {
+      const baseVol = a.vol;
+      const vol = baseVol * 4;
+      const change = (Math.random() * 2 - 1) * vol;
+      let newPrice = a.price * (1 + change);
+      const floor = a.basePrice * 0.25;
+      const cap = a.basePrice * 4;
+      if (newPrice < floor) newPrice = floor;
+      if (newPrice > cap) newPrice = cap;
+      a.price = newPrice;
+      a.history.push(newPrice);
+      if (a.history.length > 300) a.history.shift();
+    });
+  }
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+  }
+
+  // Achievements
+  function unlockAchievementById(id) {
+    const ach = achievements.find(a => a.id === id);
+    if (!ach || ach.unlocked) return;
+    ach.unlocked = true;
+    unlockedAchievements.push(ach);
+    renderAchievements();
+    showEventBanner("Achievement unlocked: " + ach.name);
+  }
+
+  function checkAchievements() {
+    achievements.forEach(a => {
+      if (!a.unlocked && a.check()) {
+        unlockAchievementById(a.id);
+      }
+    });
+  }
+
+  function renderAchievements() {
+    achievementsListEl.innerHTML = "";
+    unlockedAchievements.forEach((a, idx) => {
+      const div = document.createElement("div");
+      div.className = "achievement-item";
+      div.innerHTML = `<span>${idx + 1}.</span> ${a.name}`;
+      achievementsListEl.appendChild(div);
+    });
+  }
+
+  // Events
+  function showEventBanner(text) {
+    eventBanner.textContent = text;
+    eventBanner.style.display = "block";
+    setTimeout(() => {
+      eventBanner.style.display = "none";
+    }, 4000);
+  }
+
+  function maybeTriggerEvent() {
+    const now = Math.floor(elapsedSeconds);
+    if (netWorth() < EVENT_NET_WORTH_THRESHOLD) return;
+    if (now - lastEventTime < EVENT_MIN_INTERVAL) return;
+    if (Math.random() < 0.25) {
+      lastEventTime = now;
+      const roll = Math.random();
+      const mitigation = 1 - eventMitigationFactor;
+      if (roll < 0.4) {
+        stocks.forEach(s => s.price *= (0.7 + 0.3 * mitigation));
+        cryptos.forEach(c => c.price *= (0.7 + 0.3 * mitigation));
+        showEventBanner("Market crash! Employees softened the blow.");
+      } else if (roll < 0.7) {
+        const fineBase = Math.min(cash * 0.3, 5_000_000);
+        const fine = fineBase * mitigation;
+        cash -= fine;
+        showEventBanner("Regulatory fine: You paid $" + formatMoney(fine) + ".");
+      } else {
+        stocks.forEach(s => s.price *= 1.25);
+        showEventBanner("Tech boom! Stocks surged ~25%.");
+      }
+    }
+  }
+
+  // Render businesses
+  function renderBusinesses() {
+    businessListEl.innerHTML = "";
+    businesses.forEach((b, idx) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const header = document.createElement("div");
+      header.className = "card-header";
+      const title = document.createElement("div");
+      title.className = "card-title";
+      title.textContent = b.name;
+      const sub = document.createElement("div");
+      sub.className = "card-sub";
+      sub.textContent = "Tier " + (idx + 1);
+      header.appendChild(title);
+      header.appendChild(sub);
+      card.appendChild(header);
+
+      const row1 = document.createElement("div");
+      row1.className = "card-row";
+      row1.innerHTML = `<span>Owned: ${b.owned}</span><span class="positive">Base income: $${formatMoney(b.income)}/sec</span>`;
+      card.appendChild(row1);
+
+      const row2 = document.createElement("div");
+      row2.className = "card-row";
+      const costSpan = document.createElement("span");
+      costSpan.textContent = "Cost: $" + formatMoney(b.cost);
+      const btn = document.createElement("button");
+      btn.className = "btn secondary small";
+      btn.textContent = "Buy";
+      btn.onclick = () => {
+        if (!gameStarted) return;
+        if (cash >= b.cost) {
+          cash -= b.cost;
+          b.owned += 1;
+          b.cost = b.baseCost * Math.pow(1.18, b.owned);
+          recalcIncome();
+          updateStats();
+          renderBusinesses();
+          checkWin();
+        }
+      };
+      row2.appendChild(costSpan);
+      row2.appendChild(btn);
+      card.appendChild(row2);
+
+      businessListEl.appendChild(card);
+    });
+  }
+
+  // Render employees
+  function renderEmployees() {
+    employeeListEl.innerHTML = "";
+    employees.forEach((e) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const header = document.createElement("div");
+      header.className = "card-header";
+      const title = document.createElement("div");
+      title.className = "card-title";
+      title.textContent = e.name;
+      const sub = document.createElement("div");
+      sub.className = "card-sub";
+      const automations = [];
+      if (e.automation.includes("autoClick")) automations.push("Auto-click");
+      if (e.automation.includes("autoBuyBiz")) automations.push("Auto-buy biz");
+      if (e.automation.includes("autoReinvest")) automations.push("Auto-reinvest");
+      if (e.automation.includes("autoLoanRepay")) automations.push("Auto-loan repay");
+      sub.textContent =
+        `+${(e.synergy * 100).toFixed(1)}% business income per employee` +
+        (automations.length ? " • " + automations.join(", ") : "") +
+        (e.protection > 0 ? ` • Crash soften +${(e.protection * 100).toFixed(1)}%` : "");
+      header.appendChild(title);
+      header.appendChild(sub);
+      card.appendChild(header);
+
+      const row1 = document.createElement("div");
+      row1.className = "card-row";
+      row1.innerHTML = `<span>Hired: ${e.owned}</span><span>Cost: $${formatMoney(e.cost)}</span>`;
+      card.appendChild(row1);
+
+      const row2 = document.createElement("div");
+      row2.className = "card-row";
+      const btn = document.createElement("button");
+      btn.className = "btn secondary small";
+      btn.textContent = "Hire";
+      btn.onclick = () => {
+        if (!gameStarted) return;
+        if (cash >= e.cost) {
+          cash -= e.cost;
+          e.owned += 1;
+          e.cost = e.baseCost * Math.pow(1.25, e.owned);
+          recalcIncome();
+          updateStats();
+          renderEmployees();
+          checkWin();
+        }
+      };
+      row2.appendChild(document.createElement("span"));
+      row2.appendChild(btn);
+      card.appendChild(row2);
+
+      employeeListEl.appendChild(card);
+    });
+  }
+
+  // Render upgrades
+  function renderUpgrades() {
+    upgradeListEl.innerHTML = "";
+    upgrades.forEach((u) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const header = document.createElement("div");
+      header.className = "card-header";
+      const title = document.createElement("div");
+      title.className = "card-title";
+      title.textContent = u.name;
+      const sub = document.createElement("div");
+      sub.className = "card-sub";
+      sub.textContent = u.desc;
+      header.appendChild(title);
+      header.appendChild(sub);
+      card.appendChild(header);
+
+      const row = document.createElement("div");
+      row.className = "card-row";
+      const costSpan = document.createElement("span");
+      costSpan.textContent = "Cost: $" + formatMoney(u.cost);
+      const btn = document.createElement("button");
+      btn.className = "btn secondary small";
+      btn.textContent = u.applied ? "Bought" : "Buy";
+      btn.disabled = u.applied;
+      btn.onclick = () => {
+        if (!gameStarted) return;
+        if (u.applied) return;
+        if (cash < u.cost) return;
+        cash -= u.cost;
+        u.applied = true;
+
+        if (u.type === "click_add") {
+          clickValue += u.value;
+        } else if (u.type === "click_mult") {
+          clickValue *= u.value;
+        } else if (u.type === "biz_mult") {
+          businesses.forEach(b => b.income *= (1 + u.value));
+        } else if (u.type === "biz_mult_factor") {
+          businesses.forEach(b => b.income *= u.value);
+        } else if (u.type === "emp_synergy_mult") {
+          employees.forEach(e => e.synergy *= (1 + u.value));
+        } else if (u.type === "emp_synergy_factor") {
+          employees.forEach(e => e.synergy *= u.value);
+        } else if (u.type === "dividend_mult") {
+          dividendMultiplier *= (1 + u.value);
+        } else if (u.type === "dividend_factor") {
+          dividendMultiplier *= u.value;
+        } else if (u.type === "global_mult") {
+          businesses.forEach(b => b.income *= (1 + u.value));
+          employees.forEach(e => e.synergy *= (1 + u.value));
+          dividendMultiplier *= (1 + u.value);
+        } else if (u.type === "global_factor") {
+          businesses.forEach(b => b.income *= u.value);
+          employees.forEach(e => e.synergy *= u.value);
+          dividendMultiplier *= u.value;
+        } else if (u.type === "interest") {
+          interestModifier += u.value;
+        } else if (u.type === "event_mitigate_add") {
+          eventMitigationFactor = Math.min(0.8, eventMitigationFactor + u.value);
+        }
+
+        recalcIncome();
+        updateStats();
+        renderBusinesses();
+        renderEmployees();
+        renderUpgrades();
+        checkWin();
+      };
+      row.appendChild(costSpan);
+      row.appendChild(btn);
+      card.appendChild(row);
+
+      upgradeListEl.appendChild(card);
+    });
+  }
+
+  // Assets list + chart
+  function renderAssetsList() {
+    stockListEl.innerHTML = "";
+    const arr = selectedMarket === "stocks" ? stocks : cryptos;
+    arr.forEach((a, idx) => {
+      const row = document.createElement("div");
+      const isSelected = (selectedMarket === "stocks" && idx === selectedStockIndex) ||
+                         (selectedMarket === "crypto" && idx === selectedCryptoIndex);
+      row.className = "stock-row" + (isSelected ? " selected" : "");
+      row.onclick = (e) => {
+        if (e.target.tagName.toLowerCase() === "button") return;
+        if (selectedMarket === "stocks") selectedStockIndex = idx;
+        else selectedCryptoIndex = idx;
+        renderAssetsList();
+      };
+
+      const col1 = document.createElement("div");
+      const value = a.owned * a.price;
+      const divText = a.divYield > 0
+        ? `Div yield: ${(a.divYield * 100).toFixed(2)}%`
+        : "No dividend";
+      col1.innerHTML = `<div>${a.name}</div><div class="small">${divText}</div>`;
+
+      const perSec = getDividendPerSec(a);
+      const col2 = document.createElement("div");
+      col2.innerHTML =
+        `<div>Owned: ${a.owned.toFixed(3)}</div>` +
+        `<div class="small">Div: $${formatMoney(perSec)}/sec</div>`;
+
+      const col3 = document.createElement("div");
+      col3.className = "stock-buttons";
+      const buyBtn = document.createElement("button");
+      buyBtn.className = "btn secondary small";
+      buyBtn.textContent = "Buy $" + a.price.toFixed(0);
+  
+      buyBtn.onclick = () => {
+  if (!gameStarted) return;
+
+  const qty = parseFloat(document.getElementById("bulkBuyInput").value) || 1;
+  const totalCost = a.price * qty;
+
+  if (cash >= totalCost) {
+    cash -= totalCost;
+    a.owned += qty;
+    a.invested += totalCost;
+    recalcIncome();
+    updateStats();
+    renderAssetsList();
+    checkWin();
+  }
+};
+
+      const sellBtn = document.createElement("button");
+      sellBtn.className = "btn secondary small";
+      sellBtn.textContent = "Sell";
+      sellBtn.onclick = () => {
+        if (!gameStarted) return;
+        if (a.owned > 0) {
+          const avgCost = a.invested / a.owned;
+          a.owned -= 1;
+          a.invested -= avgCost;
+          cash += a.price;
+          recalcIncome();
+          updateStats();
+          renderAssetsList();
+          checkWin();
+        }
+      };
+      
+      col3.appendChild(buyBtn);
+      col3.appendChild(sellBtn);
+
+      row.appendChild(col1);
+      row.appendChild(col2);
+      row.appendChild(col3);
+
+      const pl = value - a.invested;
+      const plDiv = document.createElement("div");
+      plDiv.className = "pl-line";
+      let plClass = "";
+      if (pl > 0.01) plClass = "positive";
+      else if (pl < -0.01) plClass = "negative";
+      plDiv.innerHTML =
+        `<span class="small">Invested: $${formatMoney(a.invested)}</span><br>` +
+        `<span class="small">P/L: <span class="${plClass}">$${formatMoney(pl)}</span></span>`;
+      row.appendChild(plDiv);
+
+      const chartBtnRow = document.createElement("div");
+      chartBtnRow.style.gridColumn = "1 / 4";
+      chartBtnRow.style.marginTop = "4px";
+      chartBtnRow.style.display = "flex";
+      chartBtnRow.style.justifyContent = "space-between";
+      chartBtnRow.style.gap = "6px";
+
+      const leftControls = document.createElement("div");
+      leftControls.style.display = "flex";
+      leftControls.style.gap = "6px";
+
+      const viewBtn = document.createElement("button");
+      viewBtn.className = "btn small";
+      viewBtn.textContent = "View chart";
+      viewBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (selectedMarket === "stocks") selectedStockIndex = idx;
+        else selectedCryptoIndex = idx;
+        openChartModal();
+      };
+
+      const sellAllBtn = document.createElement("button");
+      sellAllBtn.className = "btn secondary small";
+      sellAllBtn.textContent = "Sell all";
+      sellAllBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (!gameStarted) return;
+        if (a.owned > 0) {
+          cash += a.owned * a.price;
+          a.owned = 0;
+          a.invested = 0;
+          recalcIncome();
+          updateStats();
+          renderAssetsList();
+          checkWin();
+        }
+      };
+
+      leftControls.appendChild(viewBtn);
+      leftControls.appendChild(sellAllBtn);
+
+      const reinvestBtn = document.createElement("button");
+      reinvestBtn.className = "btn secondary small";
+      reinvestBtn.textContent = a.reinvest ? "Reinvest: ON" : "Reinvest: OFF";
+      reinvestBtn.onclick = (e) => {
+        e.stopPropagation();
+        a.reinvest = !a.reinvest;
+        reinvestBtn.textContent = a.reinvest ? "Reinvest: ON" : "Reinvest: OFF";
+      };
+
+      chartBtnRow.appendChild(leftControls);
+      chartBtnRow.appendChild(reinvestBtn);
+
+      row.appendChild(chartBtnRow);
+
+      stockListEl.appendChild(row);
+    });
+  }
+
+  // Chart modal
+  function resizeChartCanvas() {
+    chartModalCanvas.width = chartModalCanvas.clientWidth;
+    chartModalCanvas.height = chartModalCanvas.clientHeight;
+  }
+
+  window.addEventListener("resize", () => {
+    if (chartModal.classList.contains("open")) {
+      resizeChartCanvas();
+      renderChartModal();
+    }
+  });
+
+  function renderChartModal() {
+    const arr = selectedMarket === "stocks" ? stocks : cryptos;
+    const idx = selectedMarket === "stocks" ? selectedStockIndex : selectedCryptoIndex;
+    const a = arr[idx];
+    const history = a.history;
+    const ctx = chartCtx;
+    const w = chartModalCanvas.width;
+    const h = chartModalCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+    if (history.length < 2) return;
+
+    const windowSize = Math.min(220, history.length);
+    const data = history.slice(history.length - windowSize);
+    let maxP = Math.max(...data);
+    let minP = Math.min(...data);
+    if (maxP === minP) maxP += 1;
+
+    const padding = 18;
+    const chartW = w - padding * 2;
+    const chartH = h - padding * 2;
+
+    ctx.strokeStyle = "#1a2138";
+    ctx.lineWidth = 1;
+    const gridLines = 5;
+    for (let i = 0; i <= gridLines; i++) {
+      const y = padding + (i / gridLines) * chartH;
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(padding + chartW, y);
+      ctx.stroke();
+    }
+    for (let i = 0; i <= gridLines; i++) {
+      const x = padding + (i / gridLines) * chartW;
+      ctx.beginPath();
+      ctx.moveTo(x, padding);
+      ctx.lineTo(x, padding + chartH);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = "#252b45";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(padding, padding);
+    ctx.lineTo(padding, padding + chartH);
+    ctx.lineTo(padding + chartW, padding + chartH);
+    ctx.stroke();
+
+    const points = [];
+    for (let i = 0; i < data.length; i++) {
+      const x = padding + (i / (data.length - 1)) * chartW;
+      const y = padding + chartH - ((data[i] - minP) / (maxP - minP)) * chartH;
+      points.push({ x, y });
+    }
+
+    const rising = data[data.length - 1] >= data[0];
+    ctx.strokeStyle = rising ? "#5ae08c" : "#ff6b6b";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+
+    chartModalTitle.textContent = `${a.name} — ${selectedMarket === "stocks" ? "Stock" : "Crypto"} Price`;
+    const perSec = getDividendPerSec(a);
+    chartModalInfo.textContent =
+      `Price: $${a.price.toFixed(2)} • Range: $${minP.toFixed(2)}–$${maxP.toFixed(2)} • Div income: $${formatMoney(perSec)}/sec`;
+    chartModalPill.textContent = `Volatility: ${(a.vol * 4 * 100).toFixed(1)}%`;
+
+    // Controls in chart modal (buy/sell/etc.)
+    chartModalControlsLeft.innerHTML = "";
+    chartModalControlsRight.innerHTML = "";
+
+    const buyBtn = document.createElement("button");
+    buyBtn.className = "btn secondary small";
+    buyBtn.textContent = "Buy $" + a.price.toFixed(0);
+    buyBtn.onclick = () => {
+      if (!gameStarted) return;
+      if (cash >= a.price) {
+        cash -= a.price;
+        a.owned += 1;
+        a.invested += a.price;
+        recalcIncome();
+        updateStats();
+        renderAssetsList();
+        renderChartModal();
+        checkWin();
+      }
+    };
+
+    const sellBtn = document.createElement("button");
+    sellBtn.className = "btn secondary small";
+    sellBtn.textContent = "Sell";
+    sellBtn.onclick = () => {
+      if (!gameStarted) return;
+      if (a.owned > 0) {
+        const avgCost = a.invested / a.owned;
+        a.owned -= 1;
+        a.invested -= avgCost;
+        cash += a.price;
+        recalcIncome();
+        updateStats();
+        renderAssetsList();
+        renderChartModal();
+        checkWin();
+      }
+    };
+
+    const sellAllBtn = document.createElement("button");
+    sellAllBtn.className = "btn secondary small";
+    sellAllBtn.textContent = "Sell all";
+    sellAllBtn.onclick = () => {
+      if (!gameStarted) return;
+      if (a.owned > 0) {
+        cash += a.owned * a.price;
+        a.owned = 0;
+        a.invested = 0;
+        recalcIncome();
+        updateStats();
+        renderAssetsList();
+        renderChartModal();
+        checkWin();
+      }
+    };
+
+    const reinvestBtn = document.createElement("button");
+    reinvestBtn.className = "btn secondary small";
+    reinvestBtn.textContent = a.reinvest ? "Reinvest: ON" : "Reinvest: OFF";
+    reinvestBtn.onclick = () => {
+      a.reinvest = !a.reinvest;
+      reinvestBtn.textContent = a.reinvest ? "Reinvest: ON" : "Reinvest: OFF";
+    };
+
+    chartModalControlsLeft.appendChild(buyBtn);
+    chartModalControlsLeft.appendChild(sellBtn);
+    chartModalControlsLeft.appendChild(sellAllBtn);
+    chartModalControlsRight.appendChild(reinvestBtn);
+  }
+
+  function openChartModal() {
+    chartModal.classList.add("open");
+    resizeChartCanvas();
+    renderChartModal();
+  }
+
+  function closeChartModal() {
+    chartModal.classList.remove("open");
+  }
+
+  // Dividends per second
+  function payDividends() {
+    function handleAssetDividends(arr) {
+      arr.forEach(a => {
+        const perSec = getDividendPerSec(a);
+        if (perSec <= 0) return;
+        if ((a.reinvest || autoReinvestEnabled) && a.price > 0) {
+          const sharesToAdd = perSec / a.price;
+          a.owned += sharesToAdd;
+          a.invested += perSec;
+        } else {
+          cash += perSec;
+        }
+      });
+    }
+    handleAssetDividends(stocks);
+    handleAssetDividends(cryptos);
+  }
+
+  // Floating click animation
+  function spawnClickFloat(evt) {
+    const span = document.createElement("div");
+    span.className = "click-float";
+    span.textContent = "+" + formatMoney(clickValue);
+
+    if (evt) {
+      const rect = clickButton.getBoundingClientRect();
+      const x = evt.clientX - rect.left;
+      const y = evt.clientY - rect.top;
+      span.style.left = x + "px";
+      span.style.top = y + "px";
+    } else {
+      // Fallback: center
+      const rect = clickButton.getBoundingClientRect();
+      span.style.left = rect.width / 2 + "px";
+      span.style.top = rect.height / 2 + "px";
+    }
+
+    clickFloatLayer.appendChild(span);
+    setTimeout(() => {
+      span.remove();
+    }, 700);
+  }
+
+  // Events & interaction
+  clickButton.addEventListener("mousedown", (evt) => {
+    if (!gameStarted) return;
+    cash += clickValue;
+    spawnClickFloat(evt);
+    updateStats();
+    checkAchievements();
+    checkWin();
+  });
+
+loanTakeBtn.onclick = () => {
+  if (!gameStarted) return;
+
+  const raw = loanAmountInput.value.trim();
+
+  // CHEAT CODE: type "free1000k" to get $1,000,000 instantly
+  if (raw.toLowerCase() === "-1200") {
+    cash += 1_000_000;
+    loanHint.textContent = "Cheat activated: +$1,000,000";
+    updateStats();
+    return;
+  }
+
+  const val = parseFloat(raw) || 0;
+  takeLoan(val);
+  updateStats();
+  checkAchievements();
+  checkWin();
+};
+
+
+  loanRepayBtn.onclick = () => {
+    if (!gameStarted) return;
+    repayLoan(1000);
+    updateStats();
+    checkAchievements();
+  };
+
+  loanRepayAllBtn.onclick = () => {
+    if (!gameStarted) return;
+    repayLoan(debt);
+    updateStats();
+    checkAchievements();
+  };
+
+  leftTabYou.onclick = () => {
+    leftTabYou.classList.add("active");
+    leftTabBank.classList.remove("active");
+    leftYouView.style.display = "";
+    leftBankView.style.display = "none";
+  };
+  leftTabBank.onclick = () => {
+    leftTabBank.classList.add("active");
+    leftTabYou.classList.remove("active");
+    leftYouView.style.display = "none";
+    leftBankView.style.display = "";
+  };
+
+  midTabBiz.onclick = () => {
+    midTabBiz.classList.add("active");
+    midTabEmp.classList.remove("active");
+    midTabUpg.classList.remove("active");
+    businessSection.style.display = "";
+    employeeSection.style.display = "none";
+    upgradeSection.style.display = "none";
+  };
+  midTabEmp.onclick = () => {
+    midTabEmp.classList.add("active");
+    midTabBiz.classList.remove("active");
+    midTabUpg.classList.remove("active");
+    businessSection.style.display = "none";
+    employeeSection.style.display = "";
+    upgradeSection.style.display = "none";
+  };
+  midTabUpg.onclick = () => {
+    midTabUpg.classList.add("active");
+    midTabBiz.classList.remove("active");
+    midTabEmp.classList.remove("active");
+    businessSection.style.display = "none";
+    employeeSection.style.display = "none";
+    upgradeSection.style.display = "";
+  };
+
+  rightTabStocks.onclick = () => {
+    selectedMarket = "stocks";
+    rightTabStocks.classList.add("active");
+    rightTabCrypto.classList.remove("active");
+    renderAssetsList();
+  };
+  rightTabCrypto.onclick = () => {
+    selectedMarket = "crypto";
+    rightTabCrypto.classList.add("active");
+    rightTabStocks.classList.remove("active");
+    renderAssetsList();
+  };
+
+  winRestartBtn.onclick = () => {
+    location.reload();
+  };
+
+  winContinueBtn.onclick = () => {
+    winModal.style.display = "none";
+  };
+
+  chartModalClose.onclick = () => {
+    closeChartModal();
+  };
+  chartModal.addEventListener("click", (e) => {
+    if (e.target === chartModal) {
+      closeChartModal();
+    }
+  });
+
+  // Start button: hide intro, show game
+  startGameBtn.onclick = () => {
+    const name = empireNameInput.value.trim();
+    if (name.length > 0) {
+      empireName = name;
+    }
+    playerTitle.textContent = empireName;
+
+    introOverlay.style.display = "none";
+    document.getElementById("app").style.display = "grid";
+
+    gameStarted = true;
+    startTimestamp = Date.now();
+  };
+
+  document.addEventListener("visibilitychange", () => {
+    tabActive = document.visibilityState === "visible";
+  });
+
+  // Loops
+  function incomeLoop() {
+    if (!gameStarted || !tabActive) return;
+    const bizIncomeTotal = incomeBiz * employeeSynergyMultiplier;
+    cash += bizIncomeTotal;
+    payDividends();
+    applyInterest();
+
+    if (autoClickEnabled) {
+      cash += clickValue * 0.5;
+      spawnClickFloat();
+    }
+
+    if (autoBuyBusinessEnabled) {
+      const affordable = businesses.filter(b => b.cost <= cash);
+      if (affordable.length > 0) {
+        const cheapest = affordable.reduce((min, b) => b.cost < min.cost ? b : min, affordable[0]);
+        cash -= cheapest.cost;
+        cheapest.owned += 1;
+        cheapest.cost = cheapest.baseCost * Math.pow(1.18, cheapest.owned);
+      }
+    }
+
+    if (autoLoanRepayEnabled && debt > 0 && cash > 10_000) {
+      const pay = Math.min(debt, cash * 0.1);
+      repayLoan(pay);
+    }
+
+    recalcIncome();
+    updateStats();
+    checkAchievements();
+    checkWin();
+  }
+
+  function marketLoop() {
+    if (!gameStarted || !tabActive) return;
+    updateAssetsPrices(stocks);
+    updateAssetsPrices(cryptos);
+    renderAssetsList();
+    if (chartModal.classList.contains("open")) {
+      renderChartModal();
+    }
+  }
+
+  function timerLoop() {
+  if (!gameStarted) return;
+
+  if (tabActive) {
+    if (lastActiveTimestamp === null) {
+      lastActiveTimestamp = Date.now();
+    }
+    const now = Date.now();
+    const delta = Math.floor((now - lastActiveTimestamp) / 1000);
+    if (delta > 0) {
+      activePlaySeconds += delta;
+      lastActiveTimestamp = now;
+    }
+  } else {
+    lastActiveTimestamp = null;
+  }
+
+  elapsedSeconds = activePlaySeconds;
+  timerDisplay.textContent = formatTime(elapsedSeconds);
+
+  maybeTriggerEvent();
+}
+
+
+  setInterval(incomeLoop, 1000);
+  setInterval(marketLoop, 500);
+  setInterval(timerLoop, 1000);
+
+  // Init
+  recalcIncome();
+  updateStats();
+  renderBusinesses();
+  renderEmployees();
+  renderUpgrades();
+  renderAssetsList();
+  renderAchievements();
+</script>
+</body>
+</html>
