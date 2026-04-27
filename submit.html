@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VEXEL | Deploy</title>
+    <style>
+        body { background: #0a0a0c; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .form-container { background: rgba(255,255,255,0.05); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); width: 400px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #00f2ff; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+        a { color: #888; display: block; text-align: center; margin-top: 1rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 style="margin-top:0">Project Submission</h2>
+        <input type="text" id="projName" placeholder="Project Title">
+        <textarea id="projDesc" placeholder="Description of the experience" rows="3"></textarea>
+        <textarea id="projCode" placeholder="Paste functional logic/source code here" rows="5"></textarea>
+        <button onclick="submitProject()">DEPLOY TO HUB</button>
+        <a href="index.html">← Back to Hub</a>
+    </div>
+
+    <script>
+        function submitProject() {
+            const name = document.getElementById('projName').value;
+            const desc = document.getElementById('projDesc').value;
+            const code = document.getElementById('projCode').value;
+
+            if(!name || !desc || !code) return alert("Please fill all fields");
+
+            const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            projects.push({ name, desc, code });
+            localStorage.setItem('projects', JSON.stringify(projects));
+
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
