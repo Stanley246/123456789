@@ -2,49 +2,254 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>123456789 | Digital Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>123456789.work.gd | Elite Gaming</title>
     <style>
-        :root { --bg: #0a0a0c; --accent: #00f2ff; --glass: rgba(255, 255, 255, 0.05); }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 2rem; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; color: var(--accent); }
-        .btn { background: var(--accent); color: #000; padding: 0.8rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; }
-        #experience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 1.5rem; transition: 0.3s; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .code-snippet { background: #000; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.8rem; color: #0f0; margin-top: 10px; overflow-x: auto; }
+        :root {
+            --bg: #050505;
+            --card-bg: #0f0f0f;
+            --accent: #00ffcc;
+            --accent-glow: rgba(0, 255, 204, 0.3);
+            --text: #ffffff;
+            --secondary: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Subtle Background Grid */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        header {
+            padding: 80px 20px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            background: linear-gradient(to bottom, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--accent-glow));
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Leaderboard Button */
+        .lb-trigger {
+            margin-top: 30px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .lb-trigger:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* Game Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1100px;
+            padding: 40px 0;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            height: 200px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        /* The Hover Effect */
+        .game-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            z-index: 1;
+        }
+
+        .game-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 1;
+        }
+
+        /* Popup Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .popup {
+            background: #111;
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.15);
+            text-align: center;
+        }
+
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { color: var(--secondary); font-size: 0.8rem; text-transform: uppercase; padding: 15px; border-bottom: 1px solid #222; }
+        td { padding: 20px 15px; border-bottom: 1px solid #1a1a1a; font-weight: 500; }
+        .rank-col { color: var(--accent); font-weight: bold; width: 50px; }
+        .score-col { text-align: right; font-family: monospace; font-size: 1.1rem; }
+
+        .close-popup {
+            margin-top: 30px;
+            color: var(--secondary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
+
     <header>
-        <div class="logo">123456789</div>
-        <a href="submit.html" class="btn">Deploy New Project</a>
+        <h1>123456789</h1>
+        <div class="subtitle">Premium Money Games</div>
+        <button class="lb-trigger" onclick="togglePopup(true)">View Leaderboard</button>
     </header>
 
-    <div id="experience-grid">
-        <!-- New items will appear here -->
+    <div class="game-grid">
+        <div class="game-card">
+            <div class="game-icon">💎</div>
+            <div class="game-title">Mines</div>
+        </div>
+        <div class="game-card">
+            <div class="game-icon">📈</div>
+            <div class="game-title">Crash</div>
+        </div>
+        <div class="game-card">
+            <div class="game-icon">🎯</div>
+            <div class="game-title">Plinko</div>
+        </div>
+        <div class="game-card">
+            <div class="game-icon">⚡</div>
+            <div class="game-title">Roulette</div>
+        </div>
+        <div class="game-card">
+            <div class="game-icon">🔥</div>
+            <div class="game-title">Towers</div>
+        </div>
+        <div class="game-card">
+            <div class="game-icon">⚔️</div>
+            <div class="game-title">Duels</div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Popup -->
+    <div class="overlay" id="lbOverlay">
+        <div class="popup">
+            <h2 style="margin: 0; letter-spacing: 2px;">TOP PROFIT</h2>
+            <table>
+                <thead>
+                    <tr><th>Rank</th><th>Player</th><th style="text-align:right">Profit</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="rank-col">01</td><td>Whale_Hunter</td><td class="score-col">$42,050</td></tr>
+                    <tr><td class="rank-col">02</td><td>SatoshiKid</td><td class="score-col">$28,100</td></tr>
+                    <tr><td class="rank-col">03</td><td>Viper_X</td><td class="score-col">$15,400</td></tr>
+                </tbody>
+            </table>
+            <div class="close-popup" onclick="togglePopup(false)">CLOSE TERMINAL</div>
+        </div>
     </div>
 
     <script>
-        function loadExperiences() {
-            const grid = document.getElementById('experience-grid');
-            const data = JSON.parse(localStorage.getItem('projects') || '[]');
-            
-            if (data.length === 0) {
-                grid.innerHTML = '<p>No projects deployed yet. Use the button above to start.</p>';
-                return;
+        function togglePopup(show) {
+            const overlay = document.getElementById('lbOverlay');
+            if(show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
             }
-
-            grid.innerHTML = data.map(project => `
-                <div class="card">
-                    <span style="color:var(--accent); font-size: 0.7rem;">ACTIVE PROJECT</span>
-                    <h2>${project.name}</h2>
-                    <p>${project.desc}</p>
-                    <div class="code-snippet">${project.code}</div>
-                </div>
-            `).join('');
         }
-        window.onload = loadExperiences;
     </script>
 </body>
 </html>
