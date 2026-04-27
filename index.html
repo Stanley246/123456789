@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>123456789 | Digital Hub</title>
+    <style>
+        :root { --bg: #0a0a0c; --accent: #00f2ff; --glass: rgba(255, 255, 255, 0.05); }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 2rem; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; color: var(--accent); }
+        .btn { background: var(--accent); color: #000; padding: 0.8rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        #experience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 1.5rem; transition: 0.3s; }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .code-snippet { background: #000; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.8rem; color: #0f0; margin-top: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">123456789</div>
+        <a href="submit.html" class="btn">Deploy New Project</a>
+    </header>
+
+    <div id="experience-grid">
+        <!-- New items will appear here -->
+    </div>
+
+    <script>
+        function loadExperiences() {
+            const grid = document.getElementById('experience-grid');
+            const data = JSON.parse(localStorage.getItem('projects') || '[]');
+            
+            if (data.length === 0) {
+                grid.innerHTML = '<p>No projects deployed yet. Use the button above to start.</p>';
+                return;
+            }
+
+            grid.innerHTML = data.map(project => `
+                <div class="card">
+                    <span style="color:var(--accent); font-size: 0.7rem;">ACTIVE PROJECT</span>
+                    <h2>${project.name}</h2>
+                    <p>${project.desc}</p>
+                    <div class="code-snippet">${project.code}</div>
+                </div>
+            `).join('');
+        }
+        window.onload = loadExperiences;
+    </script>
+</body>
+</html>
