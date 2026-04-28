@@ -1,1 +1,761 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Real Estate Portfolio Builder</title>
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, sans-serif; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #1f2933 0, #050608 55%, #020308 100%);
+      color: #f9fafb;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .glass {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      padding: 20px;
+    }
+    #app {
+      max-width: 1100px;
+      width: 100%;
+    }
+    h1, h2, h3 { margin: 0 0 10px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; }
+    h3 { font-size: 16px; }
+
+    #startScreen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      z-index: 10;
+    }
+    .start-card {
+      max-width: 480px;
+      width: 100%;
+    }
+    .start-title { font-size: 28px; margin-bottom: 6px; }
+    .start-subtitle { font-size: 14px; opacity: 0.9; margin-bottom: 16px; }
+    .start-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+      margin-bottom: 12px;
+    }
+    .field-label { font-size: 12px; opacity: 0.9; margin-bottom: 4px; }
+    .field-input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+    .start-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .pill {
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.6);
+      text-align: center;
+      width: 100%;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #041016;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(22,163,74,0.45);
+    }
+    .btn:hover { background: linear-gradient(135deg, #4ade80, #22c55e); }
+    .btn.secondary {
+      background: linear-gradient(135deg, #0ea5e9, #0369a1);
+      color: #e5f6ff;
+      box-shadow: 0 8px 18px rgba(37,99,235,0.45);
+    }
+    .btn.small { padding: 6px 10px; font-size: 12px; }
+
+    .top-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .stat {
+      background: #111827;
+      padding: 8px 12px;
+      border-radius: 10px;
+      min-width: 150px;
+      border: 1px solid rgba(148,163,184,0.35);
+      font-size: 13px;
+    }
+    .stat .value { float: right; color: #facc15; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2fr 1.6fr;
+      gap: 16px;
+    }
+    .panel {
+      border-radius: 16px;
+      padding: 14px;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.35);
+      font-size: 13px;
+    }
+
+    .properties-list {
+      margin-top: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .property-card {
+      border-radius: 12px;
+      padding: 8px;
+      margin-bottom: 8px;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .property-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .tag {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .log {
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+    .log-entry { margin-bottom: 3px; }
+    .log-entry .time { opacity: 0.6; margin-right: 4px; color: #93c5fd; }
+
+    #winScreen {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+    .win-box {
+      background: #111827;
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid #4ade80;
+    }
+    .win-title {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #4ade80;
+    }
+    .hint { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+  </style>
+</head>
+
+<body>
+  <!-- FULL GAME PAGE NAV BAR -->
+<nav class="game-nav">
+<!--    <h1>Money Games</h1>
+    
+          <div>
+        <a href="index.html">Home</a>
+        <a href="index.html#games">Games</a>
+        <a href="about.html">About</a>
+       <a href="comments.html">Comments</a>
+      <a href="contributors.html">Contributors</a>
+       
+    
+    </div>
+</nav>
+
+<style>
+    .game-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: rgba(0,0,0,0.4);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .game-nav h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 28px;
+        letter-spacing: 3px;
+        color: #00eaff;
+        text-shadow: 0 0 10px #00eaff;
+    }
+
+    .game-nav a {
+        color: #fff;
+        margin-left: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .game-nav a:hover {
+        color: #00eaff;
+    }
+</style> -->
+
+  <div id="startScreen">
+    <div class="glass start-card">
+      <h1 class="start-title">Real Estate Portfolio Builder</h1>
+      <div class="start-subtitle">Every 2 seconds is a month. Grow your portfolio to $1,000,000,000 net worth.</div>
+
+      <div class="start-grid">
+        <div>
+          <div class="field-label">Your name</div>
+          <input id="playerNameInput" class="field-input" placeholder="e.g. Alex" />
+        </div>
+        <div>
+          <div class="field-label">Experience</div>
+          <select id="experienceInput" class="field-input">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <div>
+          <div class="field-label">Market</div>
+          <select id="marketInput" class="field-input">
+            <option value="stable">Stable</option>
+            <option value="growth">High-growth</option>
+            <option value="volatile">Volatile</option>
+          </select>
+        </div>
+        <div>
+          <div class="field-label">Starting Cash</div>
+          <input class="field-input" value="50000" disabled />
+        </div>
+      </div>
+
+      <div class="start-footer">
+        <button id="startGameButton" class="btn">Enter Portfolio</button>
+        <div class="pill">
+          <strong>Win by reaching $1,000,000,000 net worth</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="winScreen">
+    <div class="win-box">
+      <div class="win-title">🏆 YOU WIN</div>
+      <p>You reached a net worth of $1,000,000,000</p>
+      <button class="btn" onclick="location.reload()">Play Again</button>
+    </div>
+  </div>
+
+  <div id="app" class="glass" style="display:none;">
+    <div class="top-bar">
+      <div class="stat">Cash <span id="cashDisplay" class="value">$0</span></div>
+      <div class="stat">Net Worth <span id="netWorthDisplay" class="value">$0</span></div>
+      <div class="stat">Cashflow <span id="cashflowDisplay" class="value">$0</span></div>
+      <div class="stat">Time <span id="monthDisplay" class="value">Year 1, Month 1</span></div>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <h1 id="gameTitle">Real Estate Tycoon</h1>
+        <p id="playerIntro" style="opacity:0.8;"></p>
+
+        <h2>Market</h2>
+        <button id="refreshMarketButton" class="btn small secondary">Refresh Listings</button>
+        <div id="marketList" class="properties-list"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Your Portfolio</h2>
+        <div id="portfolioList" class="properties-list"></div>
+
+        <button id="marketingWorkButton" class="btn small secondary" style="margin-top:8px;">
+          Do Marketing Work (+$500)
+        </button>
+        <div id="marketingHint" class="hint"></div>
+
+        <h3>News</h3>
+        <div id="log" class="log"></div>
+
+        <h3>Controls</h3>
+        <button id="toggleAutoButton" class="btn">⏱ Auto: ON</button>
+      </div>
+    </div>
+  </div>
+<script>
+const leaderboardData = [
+    { game: "Race To A Billion", player: "Alex", time: "12:44" },
+    { game: "Race To A Trillion", player: "Sam", time: "18:22" },
+    { game: "Real Estate Tycoon", player: "Jordan", time: "09:51" },
+    { game: "Bank Fund Tycoon", player: "Chris", time: "14:10" }
+];
+
+document.getElementById("openLeaderboard").onclick = () => {
+    loadLeaderboard();
+    document.getElementById("leaderboardModal").style.display = "flex";
+};
+
+function closeLeaderboard() {
+    document.getElementById("leaderboardModal").style.display = "none";
+}
+
+function loadLeaderboard() {
+    const body = document.getElementById("leaderboardBody");
+    body.innerHTML = "";
+
+    leaderboardData.forEach(entry => {
+        body.innerHTML += `
+            <tr>
+                <td>${entry.game}</td>
+                <td>${entry.player}</td>
+                <td>${entry.time}</td>
+            </tr>
+        `;
+    });
+}
+
+window.onclick = e => {
+    if (e.target === document.getElementById("leaderboardModal")) {
+        closeLeaderboard();
+    }
+};
+</script>
+
+  <script>
+    const GAME_VERSION = 2;
+    let autoMode = true;
+    let autoInterval = null;
+
+    const defaultState = (opts = {}) => ({
+      version: GAME_VERSION,
+      playerName: opts.playerName || "",
+      experience: opts.experience || "beginner",
+      marketProfile: opts.marketProfile || "stable",
+      cash: 50000,
+      month: 1,
+      year: 1,
+      propertiesOwned: [],
+      marketListings: [],
+      log: [],
+      lastMarketingMonth: 0,
+      lastMarketingYear: 0,
+    });
+
+    let state = defaultState();
+
+    function fmt(n) { return "$" + Math.round(n).toLocaleString(); }
+
+    function addLog(msg) {
+      state.log.unshift({ time: `Y${state.year}M${state.month}`, msg });
+      if (state.log.length > 80) state.log.pop();
+      renderLog();
+    }
+
+    function netWorth() {
+      let eq = 0;
+      for (const p of state.propertiesOwned) {
+        eq += p.currentValue - p.mortgageBalance;
+      }
+      return state.cash + eq;
+    }
+
+    function cashflow() {
+      let r = 0, e = 0;
+      for (const p of state.propertiesOwned) {
+        r += p.vacant ? 0 : p.rent;
+        e += p.expenses + p.mortgagePayment;
+      }
+      return r;
+    }
+
+    const BASE_TYPES = [
+      { name: "Starter Condo", base: 60000, rent: 0.008, exp: 0.003, risk: "Low" },
+      { name: "Suburban House", base: 120000, rent: 0.0075, exp: 0.0035, risk: "Low" },
+      { name: "Urban Apartment", base: 180000, rent: 0.009, exp: 0.004, risk: "Medium" },
+      { name: "Student Housing", base: 220000, rent: 0.01, exp: 0.0045, risk: "Medium" },
+      { name: "Retail Unit", base: 260000, rent: 0.011, exp: 0.005, risk: "Medium" },
+      { name: "Multi-Family Block", base: 420000, rent: 0.012, exp: 0.0055, risk: "High" },
+    ];
+
+    function marketMods() {
+      let app = 0.01, risk = 1;
+      if (state.marketProfile === "growth") app = 0.02;
+      if (state.marketProfile === "volatile") app = 0.005;
+      if (state.experience === "beginner") risk = 0.9;
+      if (state.experience === "advanced") risk = 1.1;
+      return { app, risk };
+    }
+
+    function genListing() {
+      const t = BASE_TYPES[Math.floor(Math.random() * BASE_TYPES.length)];
+      const { app, risk } = marketMods();
+      const q = 0.9 + Math.random() * 0.3;
+      const price = Math.round(t.base * q);
+      const rent = Math.round(price * t.rent * (0.9 + Math.random() * 0.2));
+      const exp = Math.round(price * t.exp * (0.9 + Math.random() * 0.2));
+      const appr = 0.01 + Math.random() * 0.04 + app;
+      let vac = t.risk === "Low" ? 0.04 : t.risk === "Medium" ? 0.07 : 0.11;
+      vac *= risk;
+      return {
+        id: "L" + Math.random().toString(36).slice(2),
+        name: t.name,
+        price,
+        rent,
+        expenses: exp,
+        appreciationRate: appr,
+        vacancyRisk: vac,
+        risk: t.risk,
+      };
+    }
+
+    function refreshMarket() {
+      state.marketListings = [genListing(), genListing(), genListing(), genListing()];
+      renderMarket();
+      addLog("Market refreshed");
+    }
+
+    function mortgagePayment(principal, annualRate, years) {
+      const m = annualRate / 12;
+      const n = years * 12;
+      const f = Math.pow(1 + m, n);
+      return principal * ((m * f) / (f - 1));
+    }
+
+    function buyWithDown(listing, downPercent) {
+      const down = listing.price * downPercent;
+      if (state.cash < down) {
+        addLog("Not enough cash for " + Math.round(downPercent * 100) + "% down on " + listing.name);
+        return;
+      }
+      state.cash -= down;
+      const principal = listing.price - down;
+      const rate = 0.05;
+      const years = 25;
+      const payment = mortgagePayment(principal, rate, years);
+      state.propertiesOwned.push({
+        id: "P" + Math.random().toString(36).slice(2),
+        name: listing.name,
+        currentValue: listing.price,
+        rent: listing.rent,
+        expenses: listing.expenses,
+        appreciationRate: listing.appreciationRate,
+        vacancyRisk: listing.vacancyRisk,
+        monthsOwned: 0,
+        vacant: true,
+        lastEvent: "Acquired (vacant)",
+        mortgageBalance: principal,
+        mortgagePayment: payment,
+        mortgageRate: rate,
+      });
+      state.marketListings = state.marketListings.filter(l => l.id !== listing.id);
+      addLog("Bought " + listing.name + " with " + Math.round(downPercent * 100) + "% down");
+      renderAll();
+    }
+
+    function buyCash(listing) {
+      if (state.cash < listing.price) {
+        addLog("Not enough cash to buy " + listing.name + " outright");
+        return;
+      }
+      state.cash -= listing.price;
+      state.propertiesOwned.push({
+        id: "P" + Math.random().toString(36).slice(2),
+        name: listing.name,
+        currentValue: listing.price,
+        rent: listing.rent,
+        expenses: listing.expenses,
+        appreciationRate: listing.appreciationRate,
+        vacancyRisk: listing.vacancyRisk,
+        monthsOwned: 0,
+        vacant: true,
+        lastEvent: "Acquired (vacant)",
+        mortgageBalance: 0,
+        mortgagePayment: 0,
+        mortgageRate: 0,
+      });
+      state.marketListings = state.marketListings.filter(l => l.id !== listing.id);
+      addLog("Bought " + listing.name + " with cash");
+      renderAll();
+    }
+
+    function advertiseForRenter(propertyId) {
+      const p = state.propertiesOwned.find(x => x.id === propertyId);
+      if (!p || !p.vacant) return;
+      const cost = 250;
+      if (state.cash < cost) {
+        addLog("Not enough cash to advertise for " + p.name);
+        return;
+      }
+      state.cash -= cost;
+      const success = Math.random() < 0.4;
+      if (success) {
+        p.vacant = false;
+        p.lastEvent = "Renter found via advertising";
+        addLog("Advertising succeeded: " + p.name + " is now occupied");
+      } else {
+        p.lastEvent = "Advertising failed";
+        addLog("Advertising failed for " + p.name + " (try again)");
+      }
+      renderAll();
+    }
+
+    function canDoMarketingWork() {
+      const totalNow = state.year * 12 + state.month;
+      const totalLast = state.lastMarketingYear * 12 + state.lastMarketingMonth;
+      return totalNow > totalLast;
+    }
+
+    function doMarketingWork() {
+      if (!canDoMarketingWork()) {
+        addLog("You already did marketing work this month");
+        return;
+      }
+      state.cash += 500;
+      state.lastMarketingYear = state.year;
+      state.lastMarketingMonth = state.month;
+      addLog("You did marketing work and earned $500");
+      renderAll();
+    }
+
+    function nextMonth() {
+      for (const p of state.propertiesOwned) {
+        p.monthsOwned++;
+        p.currentValue = Math.round(p.currentValue * (1 + p.appreciationRate / 12));
+        if (p.mortgageBalance > 0) {
+          const interest = p.mortgageBalance * (p.mortgageRate / 12);
+          const principalPaid = p.mortgagePayment - interest;
+          p.mortgageBalance = Math.max(0, p.mortgageBalance - principalPaid);
+        }
+        if (!p.vacant && Math.random() < p.vacancyRisk / 12) {
+          p.vacant = true;
+          p.lastEvent = "Tenant left (vacant)";
+          addLog(p.name + " became vacant");
+        }
+      }
+
+      let income = 0, expenses = 0;
+      for (const p of state.propertiesOwned) {
+        if (!p.vacant) income += p.rent;
+        expenses += p.expenses + p.mortgagePayment;
+      }
+      const cf = income - expenses;
+      state.cash += cf;
+      addLog("Month ended. Cashflow: " + fmt(cf));
+
+      state.month++;
+      if (state.month > 12) {
+        state.month = 1;
+        state.year++;
+        addLog("New year begins");
+      }
+
+      if (netWorth() >= 1000000000) {
+        clearInterval(autoInterval);
+        document.getElementById("winScreen").style.display = "flex";
+      }
+
+      renderAll();
+    }
+
+    function startAuto() {
+      if (autoInterval) clearInterval(autoInterval);
+      autoInterval = setInterval(nextMonth, 2000);
+    }
+
+    function renderTop() {
+      document.getElementById("cashDisplay").textContent = fmt(state.cash);
+      document.getElementById("netWorthDisplay").textContent = fmt(netWorth());
+      document.getElementById("cashflowDisplay").textContent = fmt(cashflow());
+      document.getElementById("monthDisplay").textContent =
+        "Year " + state.year + ", Month " + state.month;
+    }
+
+    function renderMarket() {
+      const box = document.getElementById("marketList");
+      box.innerHTML = "";
+      state.marketListings.forEach(l => {
+        const div = document.createElement("div");
+        div.className = "property-card";
+        let buttons = "";
+        const exp = state.experience;
+        if (exp === "advanced") {
+          buttons += `<button class="btn small" data-buy20="${l.id}">Buy (20% Down)</button> `;
+        }
+        buttons += `<button class="btn small" data-buy25="${l.id}">Buy (25% Down)</button> `;
+        buttons += `<button class="btn small secondary" data-buyCash="${l.id}">Buy (Cash)</button>`;
+        div.innerHTML = `
+          <div class="property-header">
+            <div>${l.name} <span class="tag">${l.risk}</span></div>
+            <div>${fmt(l.price)}</div>
+          </div>
+          <div>Rent: ${fmt(l.rent)} | Expenses: ${fmt(l.expenses)}</div>
+          <div>Appreciation: ${(l.appreciationRate * 100).toFixed(1)}% · Vacancy: ${(l.vacancyRisk * 100).toFixed(1)}%</div>
+          <div style="margin-top:4px;">${buttons}</div>
+        `;
+        box.appendChild(div);
+      });
+
+      box.querySelectorAll("[data-buy20]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-buy20");
+          const listing = state.marketListings.find(x => x.id === id);
+          if (listing) buyWithDown(listing, 0.20);
+        });
+      });
+      box.querySelectorAll("[data-buy25]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-buy25");
+          const listing = state.marketListings.find(x => x.id === id);
+          if (listing) buyWithDown(listing, 0.25);
+        });
+      });
+      box.querySelectorAll("[data-buyCash]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-buyCash");
+          const listing = state.marketListings.find(x => x.id === id);
+          if (listing) buyCash(listing);
+        });
+      });
+    }
+
+    function renderPortfolio() {
+      const box = document.getElementById("portfolioList");
+      box.innerHTML = "";
+      state.propertiesOwned.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "property-card";
+        const equity = p.currentValue - p.mortgageBalance;
+        const vacText = p.vacant ? "Vacant" : "Occupied";
+        const vacTag = p.vacant ? "Vacant" : "Occupied";
+        const advertiseBtn = p.vacant
+          ? `<button class="btn small secondary" data-advertise="${p.id}">Advertise for Renter ($250)</button>`
+          : "";
+        div.innerHTML = `
+          <div class="property-header">
+            <div>${p.name} <span class="tag">${vacTag}</span></div>
+            <div>${fmt(p.currentValue)}</div>
+          </div>
+          <div>Rent: ${fmt(p.rent)} | Expenses: ${fmt(p.expenses)} | Mortgage: ${fmt(p.mortgagePayment)}</div>
+          <div>Equity: ${fmt(equity)} | Balance: ${fmt(p.mortgageBalance)}</div>
+          <div>Owned: ${p.monthsOwned} months · Last: ${p.lastEvent}</div>
+          <div style="margin-top:4px;">${advertiseBtn}</div>
+        `;
+        box.appendChild(div);
+      });
+
+      box.querySelectorAll("[data-advertise]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-advertise");
+          advertiseForRenter(id);
+        });
+      });
+    }
+
+    function renderLog() {
+      const box = document.getElementById("log");
+      box.innerHTML = "";
+      state.log.forEach(e => {
+        const div = document.createElement("div");
+        div.className = "log-entry";
+        div.innerHTML = `<span class="time">[${e.time}]</span>${e.msg}`;
+        box.appendChild(div);
+      });
+    }
+
+    function renderIntro() {
+      const intro = document.getElementById("playerIntro");
+      intro.textContent =
+        (state.playerName || "Investor") +
+        " in a " + state.marketProfile +
+        " market as a " + state.experience + " investor.";
+    }
+
+    function renderMarketingHint() {
+      const hint = document.getElementById("marketingHint");
+      if (canDoMarketingWork()) {
+        hint.textContent = "Marketing work available this month (+$500).";
+      } else {
+        hint.textContent = "You already did marketing work this month.";
+      }
+    }
+
+    function renderAll() {
+      renderTop();
+      renderMarket();
+      renderPortfolio();
+      renderLog();
+      renderIntro();
+      renderMarketingHint();
+    }
+
+    function hideStartScreen() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("app").style.display = "block";
+    }
+
+    document.getElementById("startGameButton").addEventListener("click", () => {
+      state = defaultState({
+        playerName: document.getElementById("playerNameInput").value,
+        experience: document.getElementById("experienceInput").value,
+        marketProfile: document.getElementById("marketInput").value,
+      });
+      hideStartScreen();
+      refreshMarket();
+      startAuto();
+      renderAll();
+    });
+
+    document.getElementById("refreshMarketButton").addEventListener("click", () => {
+      refreshMarket();
+    });
+
+    document.getElementById("toggleAutoButton").addEventListener("click", () => {
+      autoMode = !autoMode;
+      document.getElementById("toggleAutoButton").textContent =
+        autoMode ? "⏱ Auto: ON" : "⏱ Auto: OFF";
+      if (autoMode) startAuto();
+      else clearInterval(autoInterval);
+    });
+
+    document.getElementById("marketingWorkButton").addEventListener("click", () => {
+      doMarketingWork();
+    });
+
+    refreshMarket();
+  </script>
+</body>
+</html>
