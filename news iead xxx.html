@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon News | April 30, 2026</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #d32f2f;
+            --text: #333;
+            --light: #f4f4f4;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Sections */
+        .section {
+            display: none; /* Hidden by default */
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .section.active {
+            display: block; /* Show only active section */
+        }
+
+        h2 {
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 30px;
+            padding-bottom: 5px;
+        }
+
+        /* News Story Styling */
+        article {
+            background: var(--white);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        article h3 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .date {
+            color: #888;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        article p {
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Horizon News</div>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('general')">General</a>
+                <a href="#" onclick="showSection('business')">Business & Finance</a>
+                <a href="#" onclick="showSection('sport')">Sport</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- GENERAL SECTION -->
+    <div id="general" class="section active">
+        <h2>General News</h2>
+
+        <article>
+            <h3>Strait of Hormuz Crisis Escalates</h3>
+            <span class="date">April 30, 2026</span>
+            <p>The ongoing shipping stand-off in the Strait of Hormuz has sent global energy markets into a frenzy. Brent crude has hit $118 per barrel as the UN warns of a "severe energy crisis" impacting Southeast Asia and Europe. Discussions are underway in Geneva to address the reliance on fossil fuels as fertilizer prices spike by 50%.</p>
+        </article>
+
+        <article>
+            <h3>Ukraine Army Chief Orders Frontline Rotation</h3>
+            <span class="date">April 30, 2026</span>
+            <p>General Oleksandr Syrskyi has issued a decree mandating a two-month limit for frontline troops. This move aims to address exhaustion in the fifth year of the conflict. The decision comes as drone dominance transforms the battlefield, necessitating more frequent rotations to preserve personnel lives.</p>
+        </article>
+    </div>
+
+    <!-- BUSINESS & FINANCE SECTION -->
+    <div id="business" class="section">
+        <h2>Business & Finance</h2>
+
+        <article>
+            <h3>Oil Prices Surge to $126 on War Fears</h3>
+            <span class="date">April 30, 2026</span>
+            <p>Global markets are reeling as oil prices hit fresh four-year highs. The surge followed reports of potential US strikes on Iran, with Brent crude jumping over 7%. The blockade of Iranian ports is now expected to last months, threatening 20% of the world's energy supply route.</p>
+        </article>
+
+        <article>
+            <h3>Eli Lilly Smashes Q1 Forecasts</h3>
+            <span class="date">April 30, 2026</span>
+            <p>Pharma giant Eli Lilly saw its shares soar after beating market forecasts. The growth is largely attributed to the massive demand for its weight-loss treatments, Mounjaro and Zepbound. The company has subsequently raised its full-year guidance for investors.</p>
+        </article>
+    </div>
+
+    <!-- SPORT SECTION -->
+    <div id="sport" class="section">
+        <h2>Sport News</h2>
+
+        <article>
+            <h3>FIFA Forecasts Record $13bn Revenue</h3>
+            <span class="date">April 30, 2026</span>
+            <p>Ahead of the 2026 World Cup, FIFA has projected a record-breaking $13 billion in revenue. Of this, nearly $11.7 billion is earmarked for reinvestment into global football development. Host cities are reportedly finalizing infrastructure as interest reaches fever pitch.</p>
+        </article>
+
+        <article>
+            <h3>Mikel Arteta Fumes After Madrid Clash</h3>
+            <span class="date">April 30, 2026</span>
+            <p>Arsenal manager Mikel Arteta delivered a fiery press conference following a controversial VAR decision against Atlético Madrid. The Gunners felt "robbed" in the European clash, with Arteta calling for more transparency in officiating standards across the competition.</p>
+        </article>
+    </div>
+
+    <footer>
+        &copy; 2026 Horizon News Network. Self-contained Edition.
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
