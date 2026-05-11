@@ -6,7 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
+
+  <style>
+    /* Sleeker button styling without changing colours */
+    .btn-primary {
+      border-radius: 14px;
+      padding: 0.85rem 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+    }
+    .btn-ghost {
+      border-radius: 14px;
+      padding: 0.55rem 0.9rem;
+      font-weight: 700;
+    }
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+  </style>
 </head>
+
 <body>
   <header class="site-header">
     <div class="logo">ROGUE<span>FIDGET</span></div>
@@ -14,50 +36,58 @@
       <a href="index.html" class="active">Products</a>
       <a href="about.html">About</a>
       <button class="cart-icon" id="cartButton">
-        <span class="cart-count" id="cartCount">0</span>
-        🛒
+        <span class="cart-count" id="cartCount">0</span> 🛒
       </button>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-content">
-      <h1>3D PRINTED FIDGET TOYS THAT DON’T PLAY NICE.</h1>
-      <p>Brutal textures. Sharp lines. Zero compromise. Built to be clicked, twisted, and pushed to the limit.</p>
-      <a href="#products" class="btn-primary">SHOP THE LINEUP</a>
+      <h1>3D PRINTED FIDGET MACHINES BUILT FOR MAXIMUM CHAOS.</h1>
+      <p>Engineered for restless hands, obsessive minds, and anyone who needs something to click, spin, snap, or crush between their fingers.</p>
+      <a href="#products" class="btn-primary">EXPLORE THE ARMORY</a>
+    </div>
+
+    <div class="hero-art">
+      <img src="https://images.unsplash.com/photo-1581091870622-1e7a8c2f6c3b?auto=format&fit=crop&w=900&q=80" 
+           alt="3D printer" style="width:100%;border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+    </div>
+  </section>
+
+  <section class="filters">
+    <div class="filters-inner">
+      <div>
+        <label><strong>Search:</strong></label>
+        <input type="text" id="searchInput" placeholder="Spin, click, cube..." />
+      </div>
+      <div>
+        <label><strong>Category:</strong></label>
+        <select id="categoryFilter">
+          <option value="all">All</option>
+          <option value="spinner">Spinner</option>
+          <option value="cube">Cube</option>
+          <option value="ring">Ring</option>
+          <option value="slider">Slider</option>
+        </select>
+      </div>
+      <div>
+        <label><strong>Sort:</strong></label>
+        <select id="sortSelect">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+        </select>
+      </div>
     </div>
   </section>
 
   <main>
-    <section class="filters">
-      <div class="filters-inner">
-        <div>
-          <label for="searchInput"><strong>Search:</strong></label>
-          <input type="text" id="searchInput" placeholder="Spin, click, cube..." />
-        </div>
-        <div>
-          <label for="categoryFilter"><strong>Category:</strong></label>
-          <select id="categoryFilter">
-            <option value="all">All</option>
-            <option value="spinner">Spinner</option>
-            <option value="cube">Cube</option>
-            <option value="ring">Ring</option>
-            <option value="slider">Slider</option>
-          </select>
-        </div>
-        <div>
-          <label for="sortSelect"><strong>Sort:</strong></label>
-          <select id="sortSelect">
-            <option value="featured">Featured</option>
-            <option value="price-asc">Price: Low → High</option>
-            <option value="price-desc">Price: High → Low</option>
-          </select>
-        </div>
-      </div>
-    </section>
+    <section id="products" class="products-grid"></section>
 
-    <section id="products" class="products-grid">
-      <!-- Products injected by JS -->
+    <section class="cta-section" style="margin-top:4rem;">
+      <h2>Want Limited Drops?</h2>
+      <p>We release experimental prototypes, weird one‑offs, and chaotic misprints.</p>
+      <a href="about.html" class="btn-primary">LEARN MORE</a>
     </section>
   </main>
 
@@ -65,7 +95,7 @@
     <div class="footer-inner">
       <div>
         <h3>ROGUEFIDGET</h3>
-        <p>3D printed in small batches. Tuned for obsession. Designed to be abused.</p>
+        <p>Small‑batch 3D printed fidget machines. Built to be abused.</p>
       </div>
       <div>
         <h4>Links</h4>
@@ -99,7 +129,7 @@
         <span id="cartTotal">$0.00</span>
       </div>
       <button class="btn-primary btn-full" id="checkoutButton">CHECKOUT</button>
-      <p class="cart-note">Mock checkout only. No real payments—just pure prototype energy.</p>
+      <p class="cart-note">Mock checkout only. No real payments.</p>
     </div>
   </div>
   <div class="cart-backdrop" id="cartBackdrop"></div>
