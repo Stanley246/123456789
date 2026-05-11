@@ -6,7 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
+
+  <style>
+    .about-img {
+      width: 100%;
+      border-radius: 14px;
+      margin: 1.2rem 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .btn-primary {
+      border-radius: 14px;
+      padding: 0.85rem 1.6rem;
+      font-weight: 800;
+    }
+  </style>
 </head>
+
 <body>
   <header class="site-header">
     <div class="logo">ROGUE<span>FIDGET</span></div>
@@ -14,87 +29,102 @@
       <a href="index.html">Products</a>
       <a href="about.html" class="active">About</a>
       <button class="cart-icon" id="cartButton">
-        <span class="cart-count" id="cartCount">0</span>
-        🛒
+        <span class="cart-count" id="cartCount">0</span> 🛒
       </button>
     </nav>
   </header>
 
   <section class="hero hero-secondary">
     <div class="hero-content">
-      <h1>BUILT FOR RESTLESS HANDS. AND RESTLESS MINDS.</h1>
-      <p>RogueFidget is a tiny, stubborn studio obsessed with 3D printed fidget gear that actually feels dangerous.</p>
+      <h1>THE DARK SIDE OF FIDGET DESIGN.</h1>
+      <p>We don’t make toys. We make pocket‑sized machines engineered for obsession.</p>
     </div>
   </section>
 
   <main class="page-main">
+
+    <img class="about-img" src="https://images.unsplash.com/photo-1581091012184-5c8a4d1e4c2e?auto=format&fit=crop&w=1200&q=80">
+
     <section class="about-section">
       <div class="about-block">
-        <h2>Why 3D printed?</h2>
+        <h2>Our Philosophy</h2>
         <p>
-          Because it lets us move fast, break things, and iterate like maniacs. Every toy starts as a CAD sketch,
-          gets stress‑tested on printers, then tuned by hand until it clicks, spins, or snaps just right.
+          RogueFidget was born from the idea that fidget toys shouldn’t be soft, pastel, or “mindfulness‑themed.”
+          They should feel mechanical. Industrial. Aggressive. Something you want to click until your fingers hurt.
         </p>
       </div>
 
       <div class="about-block">
-        <h2>The vibe</h2>
+        <h2>Why 3D Printing?</h2>
         <p>
-          No soft pastels. No “mindfulness” branding. Just aggressive geometry, industrial textures, and unapologetic
-          tactility. These are pocket‑sized machines for people who can’t sit still.
+          Because it lets us iterate like maniacs. We can prototype a new design in hours, stress‑test it, tweak it,
+          and print again. No factories. No waiting. Just pure, chaotic experimentation.
         </p>
       </div>
 
       <div class="about-grid">
         <div class="about-card">
-          <h3>Small batch runs</h3>
-          <p>We print in limited batches so we can tweak designs constantly and keep things fresh and weird.</p>
+          <h3>Small Batch Runs</h3>
+          <p>We print in limited quantities so we can constantly evolve designs.</p>
         </div>
         <div class="about-card">
-          <h3>Material choices</h3>
-          <p>PLA+ and PETG for durability, with experimental blends for grip, texture, and that “just one more click” feel.</p>
+          <h3>Material Engineering</h3>
+          <p>PLA+, PETG, and experimental blends tuned for grip, texture, and durability.</p>
         </div>
         <div class="about-card">
-          <h3>Designed to be used</h3>
-          <p>Edges, ridges, channels, and bearings are all tuned for real‑world fidget abuse, not just shelf aesthetics.</p>
+          <h3>Hand‑Finished</h3>
+          <p>Every piece is cleaned, assembled, and tuned by hand for perfect feel.</p>
         </div>
       </div>
     </section>
 
+    <img class="about-img" src="https://images.unsplash.com/photo-1581092334607-1e7a8c2f6c3b?auto=format&fit=crop&w=1200&q=80">
+
     <section class="faq-section">
       <h2>FAQ</h2>
+
       <div class="faq-item">
         <button class="faq-question">Are these toys actually 3D printed?</button>
         <div class="faq-answer">
-          <p>Yes. Every piece is printed, cleaned, and assembled in‑house using FDM printers and tuned profiles.</p>
+          <p>Yes. Every piece is printed, cleaned, and assembled in‑house.</p>
         </div>
       </div>
+
       <div class="faq-item">
         <button class="faq-question">Do you ship worldwide?</button>
         <div class="faq-answer">
           <p>This demo site doesn’t process real orders, but the layout is ready for real shipping logic.</p>
         </div>
       </div>
+
       <div class="faq-item">
-        <button class="faq-question">Can I request custom colors?</button>
+        <button class="faq-question">Can I request custom colours?</button>
         <div class="faq-answer">
-          <p>In a real setup, yes—custom colorways and limited runs are exactly what this brand is built for.</p>
+          <p>Absolutely — custom colourways are part of our long‑term roadmap.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Do you make limited editions?</button>
+        <div class="faq-answer">
+          <p>Yes. We frequently release experimental prototypes and one‑off misprints.</p>
         </div>
       </div>
     </section>
 
     <section class="cta-section">
-      <h2>Ready to spin something reckless?</h2>
-      <p>Hit the products page, load up your cart, and imagine the clicks.</p>
+      <h2>Ready to build your loadout?</h2>
+      <p>Head back to the product page and start assembling your arsenal.</p>
       <a href="index.html" class="btn-primary">BACK TO PRODUCTS</a>
     </section>
+
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
         <h3>ROGUEFIDGET</h3>
-        <p>3D printed in small batches. Tuned for obsession. Designed to be abused.</p>
+        <p>3D printed in small batches. Tuned for obsession.</p>
       </div>
       <div>
         <h4>Links</h4>
@@ -115,7 +145,7 @@
     <p class="footer-bottom">© <span id="year"></span> RogueFidget. All rights reserved.</p>
   </footer>
 
-  <!-- Cart Drawer (shared markup for this page too) -->
+  <!-- Cart Drawer -->
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
       <h2>Your Cart</h2>
@@ -128,7 +158,7 @@
         <span id="cartTotal">$0.00</span>
       </div>
       <button class="btn-primary btn-full" id="checkoutButton">CHECKOUT</button>
-      <p class="cart-note">Mock checkout only. No real payments—just pure prototype energy.</p>
+      <p class="cart-note">Mock checkout only. No real payments.</p>
     </div>
   </div>
   <div class="cart-backdrop" id="cartBackdrop"></div>
