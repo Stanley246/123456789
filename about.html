@@ -2,32 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>About – RogueFidget</title>
+  <title>About – FlowFidget</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
-
   <style>
     .about-img {
       width: 100%;
-      border-radius: 14px;
-      margin: 1.2rem 0;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border-radius: 18px;
+      margin: 1.4rem 0;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.7);
     }
-    .btn-primary {
-      border-radius: 14px;
-      padding: 0.85rem 1.6rem;
-      font-weight: 800;
+    .timeline {
+      margin-top: 2rem;
+      border-left: 1px solid #262636;
+      padding-left: 1.2rem;
+    }
+    .timeline-item {
+      margin-bottom: 1.2rem;
+    }
+    .timeline-item h4 {
+      margin: 0 0 0.2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ff3366;
+    }
+    .timeline-item p {
+      margin: 0;
+      color: #9a9a9a;
+      font-size: 0.9rem;
     }
   </style>
 </head>
-
 <body>
   <header class="site-header">
-    <div class="logo">ROGUE<span>FIDGET</span></div>
+    <div class="logo">FLOW<span>FIDGET</span></div>
     <nav class="main-nav">
       <a href="index.html">Products</a>
       <a href="about.html" class="active">About</a>
+      <a href="gallery.html">Gallery</a>
       <button class="cart-icon" id="cartButton">
         <span class="cart-count" id="cartCount">0</span> 🛒
       </button>
@@ -36,113 +50,127 @@
 
   <section class="hero hero-secondary">
     <div class="hero-content">
-      <h1>THE DARK SIDE OF FIDGET DESIGN.</h1>
-      <p>We don’t make toys. We make pocket‑sized machines engineered for obsession.</p>
+      <h1>DESIGNED FOR QUIET MOMENTS AND BUSY MINDS.</h1>
+      <p>FlowFidget started as a small 3D printing experiment to make fidgets that feel calm, smooth, and endlessly satisfying.</p>
     </div>
   </section>
 
   <main class="page-main">
-
-    <img class="about-img" src="https://images.unsplash.com/photo-1581091012184-5c8a4d1e4c2e?auto=format&fit=crop&w=1200&q=80">
+    <img class="about-img" src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1200&q=80" alt="3D printing studio">
 
     <section class="about-section">
       <div class="about-block">
-        <h2>Our Philosophy</h2>
+        <h2>Our approach</h2>
         <p>
-          RogueFidget was born from the idea that fidget toys shouldn’t be soft, pastel, or “mindfulness‑themed.”
-          They should feel mechanical. Industrial. Aggressive. Something you want to click until your fingers hurt.
+          We focus on motion that feels natural to repeat: gentle spins, soft clicks, quiet slides, and loops that your fingers can trace without thinking.
+          Every design is printed, tested, tweaked, and re‑printed until it feels like something you want to keep in your hand.
         </p>
       </div>
 
       <div class="about-block">
-        <h2>Why 3D Printing?</h2>
+        <h2>Why 3D printing?</h2>
         <p>
-          Because it lets us iterate like maniacs. We can prototype a new design in hours, stress‑test it, tweak it,
-          and print again. No factories. No waiting. Just pure, chaotic experimentation.
+          3D printing lets us experiment quickly. We can try new geometries, textures, and mechanisms in days instead of months.
+          That means more playful ideas, more small improvements, and more chances to discover that perfect “oh, that feels nice” moment.
         </p>
       </div>
 
       <div class="about-grid">
         <div class="about-card">
-          <h3>Small Batch Runs</h3>
-          <p>We print in limited quantities so we can constantly evolve designs.</p>
+          <h3>Iterative design</h3>
+          <p>We constantly refine shapes, tolerances, and textures based on how they feel in real hands.</p>
         </div>
         <div class="about-card">
-          <h3>Material Engineering</h3>
-          <p>PLA+, PETG, and experimental blends tuned for grip, texture, and durability.</p>
+          <h3>Material choices</h3>
+          <p>PLA+, PETG, and flexible blends tuned for grip, smoothness, and durability.</p>
         </div>
         <div class="about-card">
-          <h3>Hand‑Finished</h3>
-          <p>Every piece is cleaned, assembled, and tuned by hand for perfect feel.</p>
+          <h3>Desk‑friendly</h3>
+          <p>Most designs are quiet enough for meetings, classrooms, and shared spaces.</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>Prototype phase</h4>
+          <p>Started with a single spinner and a simple slider, printed on a small desktop machine.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Texture experiments</h4>
+          <p>We explored ridges, grooves, and curves that feel good to trace and tap.</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Flow collection</h4>
+          <p>The current lineup focuses on smooth, repeatable motions that help you focus or unwind.</p>
         </div>
       </div>
     </section>
 
-    <img class="about-img" src="https://images.unsplash.com/photo-1581092334607-1e7a8c2f6c3b?auto=format&fit=crop&w=1200&q=80">
+    <img class="about-img" src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1200&q=80" alt="Fidget prototypes">
 
     <section class="faq-section">
       <h2>FAQ</h2>
 
       <div class="faq-item">
-        <button class="faq-question">Are these toys actually 3D printed?</button>
+        <button class="faq-question">Are these actually 3D printed?</button>
         <div class="faq-answer">
-          <p>Yes. Every piece is printed, cleaned, and assembled in‑house.</p>
+          <p>Yes. Every piece is printed, cleaned, and assembled in‑house using tuned printer profiles.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Do you ship worldwide?</button>
+        <button class="faq-question">Are these real products I can buy?</button>
         <div class="faq-answer">
-          <p>This demo site doesn’t process real orders, but the layout is ready for real shipping logic.</p>
+          <p>This site is a demo, but the layout and logic are ready for a real store integration.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Can I request custom colours?</button>
+        <button class="faq-question">Are they loud?</button>
         <div class="faq-answer">
-          <p>Absolutely — custom colourways are part of our long‑term roadmap.</p>
+          <p>Most designs are intentionally quiet, with soft clicks and smooth motion suitable for shared spaces.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Do you make limited editions?</button>
+        <button class="faq-question">Can I request custom colours or designs?</button>
         <div class="faq-answer">
-          <p>Yes. We frequently release experimental prototypes and one‑off misprints.</p>
+          <p>In a real setup, yes—custom colourways and limited runs would be a big part of FlowFidget.</p>
         </div>
       </div>
     </section>
 
     <section class="cta-section">
-      <h2>Ready to build your loadout?</h2>
-      <p>Head back to the product page and start assembling your arsenal.</p>
-      <a href="index.html" class="btn-primary">BACK TO PRODUCTS</a>
+      <h2>Ready to find your favourite motion?</h2>
+      <p>Head back to the product page and explore spinners, sliders, rings, and more.</p>
+      <a href="index.html" class="btn-primary">BROWSE PRODUCTS</a>
     </section>
-
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
-        <h3>ROGUEFIDGET</h3>
-        <p>3D printed in small batches. Tuned for obsession.</p>
+        <h3>FLOWFIDGET</h3>
+        <p>3D printed fidgets designed for calm, focus, and satisfying motion.</p>
       </div>
       <div>
         <h4>Links</h4>
         <ul>
           <li><a href="index.html">Products</a></li>
           <li><a href="about.html">About & FAQ</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
         </ul>
       </div>
       <div>
-        <h4>Stay Wired</h4>
-        <p>Get drops, limited runs, and brutal prototypes.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed. Welcome to the chaos.');">
+        <h4>Stay in the loop</h4>
+        <p>Get notified when new designs drop.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed. See you in the flow.');">
           <input type="email" placeholder="you@domain.com" required />
           <button type="submit">JOIN</button>
         </form>
       </div>
     </div>
-    <p class="footer-bottom">© <span id="year"></span> RogueFidget. All rights reserved.</p>
+    <p class="footer-bottom">© <span id="year"></span> FlowFidget. All rights reserved.</p>
   </footer>
 
   <!-- Cart Drawer -->
@@ -158,7 +186,7 @@
         <span id="cartTotal">$0.00</span>
       </div>
       <button class="btn-primary btn-full" id="checkoutButton">CHECKOUT</button>
-      <p class="cart-note">Mock checkout only. No real payments.</p>
+      <p class="cart-note">Demo checkout only. No real payments.</p>
     </div>
   </div>
   <div class="cart-backdrop" id="cartBackdrop"></div>
