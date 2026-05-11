@@ -1,69 +1,140 @@
-// Basic product data
+// Product data with images + specs
 const PRODUCTS = [
   {
-    id: "rf-spin-vortex",
-    name: "Vortex Spinner",
-    price: 24.0,
+    id: "ff-vortex-spinner",
+    name: "Vortex Flow Spinner",
+    price: 22.0,
     category: "spinner",
     tag: "Featured",
-    description: "Tri‑arm spinner with aggressive knurling and a ceramic bearing core for ridiculous spin times."
+    description: "Balanced tri‑arm spinner with soft edges and a smooth ceramic core for quiet, satisfying spins.",
+    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+",
+      "Core: Hybrid ceramic bearing",
+      "Spin time: 2–4 minutes",
+      "Profile: Rounded edges for soft feel"
+    ]
   },
   {
-    id: "rf-click-brick",
-    name: "Click Brick Cube",
-    price: 18.5,
-    category: "cube",
-    tag: "New",
-    description: "Compact cube with clicky sliders, ridges, and a brutal corner profile for restless thumbs."
-  },
-  {
-    id: "rf-orbit-ring",
+    id: "ff-orbit-ring",
     name: "Orbit Ring",
     price: 16.0,
     category: "ring",
-    tag: "Minimal",
-    description: "Low‑profile ring with rotating outer track—subtle enough for meetings, loud enough for your brain."
+    tag: "Subtle",
+    description: "Low‑profile ring with a rotating outer track you can spin and roll with one hand.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PETG",
+      "Fit: Multiple inner diameters",
+      "Motion: Outer ring rotation",
+      "Noise: Very quiet"
+    ]
   },
   {
-    id: "rf-rail-slider",
+    id: "ff-rail-slider",
     name: "Rail Slider",
     price: 21.0,
     category: "slider",
-    tag: "Tactile",
-    description: "Dual‑rail slider with magnetic snap points and textured channels for satisfying, repeatable motion."
+    tag: "Smooth",
+    description: "Dual‑rail slider with gentle magnetic stops for a calm, looping back‑and‑forth motion.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+ with embedded magnets",
+      "Travel: 3‑stage slide",
+      "Feel: Soft magnetic stops",
+      "Ideal for: Focus sessions"
+    ]
   },
   {
-    id: "rf-spine-spinner",
-    name: "Spine Spinner",
-    price: 27.0,
-    category: "spinner",
-    tag: "Limited",
-    description: "Spine‑inspired profile with raised ridges and a heavy core for aggressive, weighty spins."
-  },
-  {
-    id: "rf-grid-cube",
-    name: "Gridlock Cube",
-    price: 19.5,
+    id: "ff-click-cube",
+    name: "Soft Click Cube",
+    price: 18.5,
     category: "cube",
     tag: "Classic",
-    description: "Grid‑pattern cube with pressable tiles and micro‑texture edges for constant micro‑movements."
+    description: "Compact cube with gentle click panels and rounded corners for palm‑friendly fidgeting.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+",
+      "Features: Click panels, traceable edges",
+      "Size: 30mm cube",
+      "Noise: Low click"
+    ]
+  },
+  {
+    id: "ff-loop-band",
+    name: "Loop Band",
+    price: 14.0,
+    category: "loop",
+    tag: "Minimal",
+    description: "Flexible loop you can twist, fold, and roll between your fingers without looking.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: Flexible filament blend",
+      "Motion: Twist, fold, loop",
+      "Weight: Ultra light",
+      "Best for: Idle scrolling, calls"
+    ]
+  },
+  {
+    id: "ff-roller-bar",
+    name: "Calm Roller Bar",
+    price: 19.0,
+    category: "roller",
+    tag: "New",
+    description: "Rounded bar with dual rollers that glide under your thumb for a gentle, repeating motion.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+ with smooth rollers",
+      "Motion: Thumb rolling",
+      "Grip: Soft texture",
+      "Noise: Near silent"
+    ]
+  },
+  {
+    id: "ff-wave-spinner",
+    name: "Wave Disc Spinner",
+    price: 20.0,
+    category: "spinner",
+    tag: "Calm",
+    description: "Disc‑style spinner with a wavy surface you can trace while it spins.",
+    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+",
+      "Shape: Disc with wave texture",
+      "Spin: Smooth, low wobble",
+      "Feel: Traceable ridges"
+    ]
+  },
+  {
+    id: "ff-track-slider",
+    name: "Track Slider",
+    price: 23.0,
+    category: "slider",
+    tag: "Focus",
+    description: "Single‑track slider with a gentle resistance that feels like a slow, controlled glide.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PETG",
+      "Motion: Single‑track slide",
+      "Resistance: Light, consistent",
+      "Ideal for: Deep work"
+    ]
+  },
+  {
+    id: "ff-grid-cube",
+    name: "Grid Trace Cube",
+    price: 19.5,
+    category: "cube",
+    tag: "Tactile",
+    description: "Cube with a grid of soft ridges you can trace, tap, and press while you think.",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
+    specs: [
+      "Material: PLA+",
+      "Texture: Raised grid",
+      "Size: 28mm cube",
+      "Best for: Thinking, planning"
+    ]
   }
-{
-  id: "rf-spin-vortex",
-  name: "Vortex Spinner",
-  price: 24.0,
-  category: "spinner",
-  tag: "Featured",
-  description: "Tri‑arm spinner with aggressive knurling and a ceramic bearing core.",
-  image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=600&q=80",
-  specs: [
-    "Material: PLA+ reinforced",
-    "Bearing: Hybrid ceramic",
-    "Weight: 42g",
-    "Spin time: 2–4 minutes"
-  ]
-}
-
 ];
 
 let cart = [];
@@ -112,10 +183,12 @@ function renderProducts() {
     const tag = createEl("div", "product-tag", product.tag);
     card.appendChild(tag);
 
-    const img = createEl("div", "product-image");
-    const geom = createEl("div", "product-geometry");
-    img.appendChild(geom);
-    card.appendChild(img);
+    const imgWrap = createEl("div", "product-image");
+    const img = document.createElement("img");
+    img.src = product.image;
+    img.alt = product.name;
+    imgWrap.appendChild(img);
+    card.appendChild(imgWrap);
 
     const title = createEl("h2", "product-title", product.name);
     card.appendChild(title);
@@ -140,22 +213,10 @@ function renderProducts() {
 
     const actions = createEl("div", "product-actions");
     const detailsBtn = createEl("button", "btn-ghost", "Details");
-    detailsBtn.addEventListener("click", () => {
-      alert(
-        `${product.name}\n\n${product.description}\n\nCategory: ${product.category.toUpperCase()}\nPrice: $${product.price.toFixed(
-          2
-        )}\n\nIn a real build, this would be a dedicated product page or modal.`
-      );
-    });
+    detailsBtn.addEventListener("click", () => openProductModal(product));
 
-    const addBtn = createEl(
-      "button",
-      "btn-primary btn-add",
-      "Add to Cart"
-    );
-    addBtn.addEventListener("click", () => {
-      addToCart(product.id);
-    });
+    const addBtn = createEl("button", "btn-primary btn-add", "Add to Cart");
+    addBtn.addEventListener("click", () => addToCart(product.id));
 
     actions.appendChild(detailsBtn);
     actions.appendChild(addBtn);
@@ -294,6 +355,47 @@ function initFAQ() {
   });
 }
 
+// Modal logic
+let modalProductId = null;
+
+function openProductModal(product) {
+  const backdrop = $("#modalBackdrop");
+  if (!backdrop) return;
+
+  modalProductId = product.id;
+
+  const titleEl = $("#modalTitle");
+  const imgEl = $("#modalImg");
+  const descEl = $("#modalDesc");
+  const specsEl = $("#modalSpecs");
+  const catEl = $("#modalCategory");
+  const tagEl = $("#modalTag");
+
+  if (titleEl) titleEl.textContent = product.name;
+  if (imgEl) {
+    imgEl.src = product.image;
+    imgEl.alt = product.name;
+  }
+  if (descEl) descEl.textContent = product.description;
+  if (catEl) catEl.textContent = product.category.toUpperCase();
+  if (tagEl) tagEl.textContent = product.tag;
+
+  if (specsEl) {
+    specsEl.innerHTML = "";
+    (product.specs || []).forEach((s) => {
+      const li = document.createElement("li");
+      li.textContent = s;
+      specsEl.appendChild(li);
+    });
+  }
+
+  backdrop.classList.add("open");
+}
+
+function closeProductModal() {
+  $("#modalBackdrop")?.classList.remove("open");
+}
+
 // Shared init
 document.addEventListener("DOMContentLoaded", () => {
   // Render products if on index
@@ -304,15 +406,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryFilter = $("#categoryFilter");
   const sortSelect = $("#sortSelect");
 
-  if (searchInput) {
-    searchInput.addEventListener("input", renderProducts);
-  }
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", renderProducts);
-  }
-  if (sortSelect) {
-    sortSelect.addEventListener("change", renderProducts);
-  }
+  searchInput?.addEventListener("input", renderProducts);
+  categoryFilter?.addEventListener("change", renderProducts);
+  sortSelect?.addEventListener("change", renderProducts);
 
   // Cart buttons
   const cartButton = $("#cartButton");
@@ -326,11 +422,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   checkoutButton?.addEventListener("click", () => {
     if (cart.length === 0) {
-      alert("Your cart is empty. Add something reckless first.");
+      alert("Your cart is empty. Add a fidget first.");
       return;
     }
     alert(
-      "This is a demo checkout.\n\nIn a real build, this would hand off to a payment provider.\n\nCart total: $" +
+      "Demo checkout only.\n\nIn a real build, this would hand off to a payment provider.\n\nCart total: $" +
         getCartTotal().toFixed(2)
     );
   });
@@ -343,6 +439,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+
+  // Modal events
+  const modalClose = $("#modalClose");
+  const modalBackdrop = $("#modalBackdrop");
+  const modalAdd = $("#modalAdd");
+
+  modalClose?.addEventListener("click", closeProductModal);
+  modalBackdrop?.addEventListener("click", (e) => {
+    if (e.target === modalBackdrop) closeProductModal();
+  });
+  modalAdd?.addEventListener("click", () => {
+    if (modalProductId) {
+      addToCart(modalProductId);
+      closeProductModal();
+    }
+  });
 
   // Initial cart UI
   updateCartUI();
