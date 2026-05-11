@@ -1,321 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>123456789.work.gd | Elite Challenges</title>
-
-<!-- Futuristic Font -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-/* ------------------ ROOT THEME ------------------ */
-:root {
-    --bg: #030303;
-    --card-bg: #0c0c0c;
-    --accent: #00ffd5;
-    --accent2: #00aaff;
-    --glow: rgba(0, 255, 213, 0.4);
-    --text: #ffffff;
-    --secondary: #888;
-    --radius: 22px;
-    --transition: 0.35s ease;
-}
- 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* ------------------ GRID BACKGROUND ------------------ */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px);
-    background-size: 45px 45px;
-    z-index: -2;
-}
-
-/* Soft noise texture */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: url('https://grainy-gradients.vercel.app/noise.svg');
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* ------------------ HEADER ------------------ */
-header {
-    text-align: center;
-    padding: 90px 20px 40px;
-}
-
-h1 {
-    font-size: 4rem;
-    margin: 0;
-    letter-spacing: 10px;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #fff, var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glowPulse 4s infinite ease-in-out;
-}
-
-@keyframes glowPulse {
-    0%, 100% { filter: drop-shadow(0 0 10px var(--glow)); }
-    50% { filter: drop-shadow(0 0 25px var(--glow)); }
-}
-
-.subtitle {
-    margin-top: 12px;
-    font-size: 1rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--secondary);
-}
-
-/* ------------------ BUTTON ------------------ */
-.lb-trigger {
-    margin-top: 35px;
-    padding: 14px 40px;
-    border-radius: 50px;
-    border: 1px solid var(--accent);
-    background: transparent;
-    color: var(--accent);
-    font-weight: bold;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: var(--transition);
-    text-transform: uppercase;
-}
-
-.lb-trigger:hover {
-    background: var(--accent);
-    color: #000;
-    box-shadow: 0 0 35px var(--accent);
-    transform: translateY(-3px);
-}
-
-/* ------------------ GAME GRID ------------------ */
-.game-grid {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto 80px;
-    display: grid;
-    gap: 35px;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.game-card {
-    height: 240px;
-    border-radius: var(--radius);
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-/* Neon glow overlay */
-.game-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, var(--glow) 0%, transparent 70%);
-    opacity: 0;
-    transition: var(--transition);
-}
-
-/* Hover effects */
-.game-card:hover {
-    transform: translateY(-12px) scale(1.03);
-    border-color: var(--accent);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.8);
-}
-
-.game-card:hover::before {
-    opacity: 1;
-}
-
-/* ------------------ GAME TITLE ------------------ */
-.game-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
-    line-height: 1.2;
-    z-index: 2;
-    color: var(--accent);
-    text-shadow: 0 0 12px var(--accent), 0 0 25px rgba(0,255,213,0.4);
-}
-
-/* ------------------ POPUP ------------------ */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    backdrop-filter: blur(12px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.4s ease;
-    z-index: 999;
-}
-
-.overlay.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.popup {
-    background: #0d0d0d;
-    width: 90%;
-    max-width: 480px;
-    padding: 45px;
-    border-radius: 30px;
-    border: 1px solid var(--accent);
-    box-shadow: 0 0 50px rgba(0,255,213,0.2);
-    text-align: center;
-    transform: translateY(40px);
-    opacity: 0;
-    animation: popupIn 0.5s forwards ease-out;
-}
-
-@keyframes popupIn {
-    to { transform: translateY(0); opacity: 1; }
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-}
-contact {
-    width: 100%;
-    text-align: center;
-    margin-top: 25px;
-}
-
-th {
-    padding: 15px;
-    color: var(--secondary);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    border-bottom: 1px solid #222;
-}
-
-td {
-    padding: 18px 15px;
-    border-bottom: 1px solid #1a1a1a;
-    font-weight: 500;
-}
-
-.rank-col {
-    color: var(--accent);
-    font-weight: bold;
-}
-
-.score-col {
-    text-align: right;
-    font-family: monospace;
-    font-size: 1.1rem;
-}
-
-.close-popup {
-    margin-top: 30px;
-    font-size: 0.85rem;
-    color: var(--secondary);
-    cursor: pointer;
-    text-decoration: underline;
-    transition: var(--transition);
-}
-
-.close-popup:hover {
-    color: var(--accent);
-}
-</style>
+  <meta charset="UTF-8" />
+  <title>RogueFidget – 3D Printed Fidget Toys</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
 </head>
-
 <body>
+  <header class="site-header">
+    <div class="logo">ROGUE<span>FIDGET</span></div>
+    <nav class="main-nav">
+      <a href="index.html" class="active">Products</a>
+      <a href="about.html">About</a>
+      <button class="cart-icon" id="cartButton">
+        <span class="cart-count" id="cartCount">0</span>
+        🛒
+      </button>
+    </nav>
+  </header>
 
-<header>
-    <h1>123456789</h1>
-    <div class="subtitle">Premium Money Challenges</div>
-    <button class="lb-trigger" onclick="togglePopup(true)">View Leaderboard</button>
-</header>
-
-<div class="game-grid">
-
-    <!-- ROW 1 -->
-    <a href="billion.html" class="game-card"><div class="game-title">Race To A Billion</div></a>
-    <a href="trillion.html" class="game-card"><div class="game-title">Race To A Trillion</div></a>
-    <a href="estate1.html" class="game-card"><div class="game-title">Real Estate Tycoon V1</div></a>
-    <a href="estate2.html" class="game-card"><div class="game-title">Real Estate Tycoon V2</div></a>
-
-    <!-- ROW 2 -->
-    <a href="#" class="game-card"><div class="game-title">Bank Fund Tycoon (coming soon)</div></a>
-    <a href="#" class="game-card"><div class="game-title">Black Jack (coming soon)</div></a>
-    <a href="#" class="game-card"><div class="game-title">Poker (coming soon)</div></a>
-    <a href="#" class="game-card"><div class="game-title">Career Sim (coming soon)</div></a>
-    
-    <!-- ROW 3 -->
-    <a href="#" class="game-card"><div class="game-title">Life Sim (coming soon)</div></a>
-    <a href="#" class="game-card"><div class="game-title">Coming Soon</div></a>
-    <a href="#" class="game-card"><div class="game-title">Coming Soon</div></a>
-    <a href="#" class="game-card"><div class="game-title">Coming Soon</div></a>
-
-</div>
-<div>
-<div class="contact">
- <p>If you beat a record and want to be added to the official leaderboard or just want to inquire about something contact us.</p>
- </div>
-
-<!-- POPUP -->
-<div class="overlay" id="lbOverlay">
-    <div class="popup">
-        <h2 style="letter-spacing: 3px; margin: 0;">Fastest Time</h2>
-
-        <table>
-            <thead>
-                <tr><th>Game</th><th>Player</th><th style="text-align:right">Best Time</th></tr>
-            </thead>
-            <tbody>
-                <tr><td class="rank-col">Race To A Billion</td><td>Dan</td><td class="score-col">10 Min 51 Sec</td></tr>
-                <tr><td class="rank-col">Race To A Trillion</td><td>Barney</td><td class="score-col">7 min 13 sec</td></tr>
-                <tr><td class="rank-col">Real Estate Tycoon V1</td><td>Viper_X</td><td class="score-col">00</td></tr>
-                <tr><td class="rank-col">Real Estate Tycoon V2</td><td>Viper_X</td><td class="score-col">00</td></tr>
-            </tbody>
-        </table>
-
-        <div class="close-popup" onclick="togglePopup(false)">CLOSE TERMINAL</div>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>3D PRINTED FIDGET TOYS THAT DON’T PLAY NICE.</h1>
+      <p>Brutal textures. Sharp lines. Zero compromise. Built to be clicked, twisted, and pushed to the limit.</p>
+      <a href="#products" class="btn-primary">SHOP THE LINEUP</a>
     </div>
-</div>
+  </section>
 
-<script>
-function togglePopup(show) {
-    const overlay = document.getElementById('lbOverlay');
-    overlay.classList.toggle('active', show);
-}
-</script>
+  <main>
+    <section class="filters">
+      <div class="filters-inner">
+        <div>
+          <label for="searchInput"><strong>Search:</strong></label>
+          <input type="text" id="searchInput" placeholder="Spin, click, cube..." />
+        </div>
+        <div>
+          <label for="categoryFilter"><strong>Category:</strong></label>
+          <select id="categoryFilter">
+            <option value="all">All</option>
+            <option value="spinner">Spinner</option>
+            <option value="cube">Cube</option>
+            <option value="ring">Ring</option>
+            <option value="slider">Slider</option>
+          </select>
+        </div>
+        <div>
+          <label for="sortSelect"><strong>Sort:</strong></label>
+          <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
+    <section id="products" class="products-grid">
+      <!-- Products injected by JS -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <h3>ROGUEFIDGET</h3>
+        <p>3D printed in small batches. Tuned for obsession. Designed to be abused.</p>
+      </div>
+      <div>
+        <h4>Links</h4>
+        <ul>
+          <li><a href="index.html">Products</a></li>
+          <li><a href="about.html">About & FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay Wired</h4>
+        <p>Get drops, limited runs, and brutal prototypes.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed. Welcome to the chaos.');">
+          <input type="email" placeholder="you@domain.com" required />
+          <button type="submit">JOIN</button>
+        </form>
+      </div>
+    </div>
+    <p class="footer-bottom">© <span id="year"></span> RogueFidget. All rights reserved.</p>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button id="closeCart" class="close-btn">✕</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="btn-primary btn-full" id="checkoutButton">CHECKOUT</button>
+      <p class="cart-note">Mock checkout only. No real payments—just pure prototype energy.</p>
+    </div>
+  </div>
+  <div class="cart-backdrop" id="cartBackdrop"></div>
 </body>
 </html>
