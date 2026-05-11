@@ -2,17 +2,17 @@
 const PRODUCTS = [
   {
     id: "ff-vortex-spinner",
-    name: "Vortex Flow Spinner",
+    name: "Vortex Spinner",
     price: 22.0,
     category: "spinner",
     tag: "Featured",
-    description: "Balanced tri‑arm spinner with soft edges and a smooth ceramic core for quiet, satisfying spins.",
+    description: "Balanced tri‑arm spinner with soft edges and a smooth ceramic core.",
     image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PLA+",
       "Core: Hybrid ceramic bearing",
       "Spin time: 2–4 minutes",
-      "Profile: Rounded edges for soft feel"
+      "Profile: Rounded edges"
     ]
   },
   {
@@ -21,7 +21,7 @@ const PRODUCTS = [
     price: 16.0,
     category: "ring",
     tag: "Subtle",
-    description: "Low‑profile ring with a rotating outer track you can spin and roll with one hand.",
+    description: "Low‑profile ring with a rotating outer track you can spin and roll.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PETG",
@@ -36,22 +36,22 @@ const PRODUCTS = [
     price: 21.0,
     category: "slider",
     tag: "Smooth",
-    description: "Dual‑rail slider with gentle magnetic stops for a calm, looping back‑and‑forth motion.",
+    description: "Dual‑rail slider with gentle stops for a looping back‑and‑forth motion.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PLA+ with embedded magnets",
       "Travel: 3‑stage slide",
-      "Feel: Soft magnetic stops",
+      "Feel: Soft stops",
       "Ideal for: Focus sessions"
     ]
   },
   {
     id: "ff-click-cube",
-    name: "Soft Click Cube",
+    name: "Click Cube",
     price: 18.5,
     category: "cube",
     tag: "Classic",
-    description: "Compact cube with gentle click panels and rounded corners for palm‑friendly fidgeting.",
+    description: "Compact cube with gentle click panels and rounded corners.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PLA+",
@@ -66,22 +66,22 @@ const PRODUCTS = [
     price: 14.0,
     category: "loop",
     tag: "Minimal",
-    description: "Flexible loop you can twist, fold, and roll between your fingers without looking.",
+    description: "Flexible loop you can twist, fold, and roll between your fingers.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: Flexible filament blend",
       "Motion: Twist, fold, loop",
       "Weight: Ultra light",
-      "Best for: Idle scrolling, calls"
+      "Best for: Calls and scrolling"
     ]
   },
   {
     id: "ff-roller-bar",
-    name: "Calm Roller Bar",
+    name: "Roller Bar",
     price: 19.0,
     category: "roller",
     tag: "New",
-    description: "Rounded bar with dual rollers that glide under your thumb for a gentle, repeating motion.",
+    description: "Rounded bar with dual rollers that glide under your thumb.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PLA+ with smooth rollers",
@@ -111,7 +111,7 @@ const PRODUCTS = [
     price: 23.0,
     category: "slider",
     tag: "Focus",
-    description: "Single‑track slider with a gentle resistance that feels like a slow, controlled glide.",
+    description: "Single‑track slider with a gentle resistance and steady glide.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PETG",
@@ -122,17 +122,17 @@ const PRODUCTS = [
   },
   {
     id: "ff-grid-cube",
-    name: "Grid Trace Cube",
+    name: "Grid Cube",
     price: 19.5,
     category: "cube",
     tag: "Tactile",
-    description: "Cube with a grid of soft ridges you can trace, tap, and press while you think.",
+    description: "Cube with a grid of soft ridges you can trace, tap, and press.",
     image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=800&q=80",
     specs: [
       "Material: PLA+",
       "Texture: Raised grid",
       "Size: 28mm cube",
-      "Best for: Thinking, planning"
+      "Best for: Thinking and planning"
     ]
   }
 ];
