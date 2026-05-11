@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>FlowFidget – Satisfying 3D Printed Fidgets</title>
+  <title>FlowFidget – 3D Printed Fidget Toys</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
@@ -28,6 +28,26 @@
       width: 100%;
       border-radius: 18px;
       box-shadow: 0 24px 50px rgba(0,0,0,0.7);
+    }
+    .feature-strip {
+      padding: 1.5rem 5vw 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #9a9a9a;
+    }
+    .feature-chip {
+      border-radius: 999px;
+      border: 1px solid #262636;
+      padding: 0.6rem 0.9rem;
+      background: rgba(10,10,18,0.9);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .feature-chip span {
+      font-size: 1.1rem;
     }
     .modal-backdrop {
       position: fixed;
@@ -97,26 +117,6 @@
       text-transform: uppercase;
       color: #9a9a9a;
     }
-    .feature-strip {
-      padding: 1.5rem 5vw 0.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      font-size: 0.85rem;
-      color: #9a9a9a;
-    }
-    .feature-chip {
-      border-radius: 999px;
-      border: 1px solid #262636;
-      padding: 0.6rem 0.9rem;
-      background: rgba(10,10,18,0.9);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .feature-chip span {
-      font-size: 1.1rem;
-    }
   </style>
 </head>
 <body>
@@ -134,9 +134,9 @@
 
   <section class="hero">
     <div class="hero-content">
-      <h1>SMOOTH, SATISFYING 3D PRINTED FIDGETS FOR CALM HANDS.</h1>
-      <p>Soft clicks, gentle spins, quiet sliders. FlowFidget is a collection of 3D printed objects designed to keep your hands busy and your mind at ease.</p>
-      <a href="#products" class="btn-primary">BROWSE FIDGETS</a>
+      <h1>3D PRINTED FIDGET TOYS THAT FEEL GOOD TO USE.</h1>
+      <p>Satisfying spins, smooth sliders, quiet clicks. A small lineup of 3D printed pieces built to live on your desk, in your pocket, and in your hands.</p>
+      <a href="#products" class="btn-primary">SHOP THE LINEUP</a>
     </div>
     <div class="hero-art">
       <img src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1100&q=80" alt="3D printer workspace">
@@ -145,16 +145,16 @@
 
   <section class="feature-strip">
     <div class="feature-chip">
-      <span>🌊</span>
-      <div><strong>Flow‑first design</strong><br/>Every edge, curve, and motion tuned to feel endlessly repeatable.</div>
+      <span>🌀</span>
+      <div><strong>Dialed‑in motion</strong><br/>Spins, slides, and loops tuned to feel repeatable and smooth.</div>
     </div>
     <div class="feature-chip">
-      <span>🔇</span>
-      <div><strong>Desk‑friendly quiet</strong><br/>Soft clicks and glides that won’t hijack the room.</div>
+      <span>🔧</span>
+      <div><strong>3D printed details</strong><br/>Layer lines, textures, and shapes that invite your hands to explore.</div>
     </div>
     <div class="feature-chip">
-      <span>🧩</span>
-      <div><strong>Mix & match</strong><br/>Build a small collection that fits your mood and focus style.</div>
+      <span>🖥️</span>
+      <div><strong>Desk‑ready</strong><br/>Designed to sit next to your keyboard, notebook, or controller.</div>
     </div>
   </section>
 
@@ -191,9 +191,9 @@
     <section id="products" class="products-grid"></section>
 
     <section class="cta-section" style="margin-top:4rem;">
-      <h2>Want to see them in motion?</h2>
-      <p>Check out the gallery for close‑ups and motion shots of our most satisfying designs.</p>
-      <a href="gallery.html" class="btn-primary">VIEW GALLERY</a>
+      <h2>Want a closer look?</h2>
+      <p>Check out the gallery for detail shots and different angles of the current lineup.</p>
+      <a href="gallery.html" class="btn-primary">OPEN GALLERY</a>
     </section>
   </main>
 
@@ -201,7 +201,7 @@
     <div class="footer-inner">
       <div>
         <h3>FLOWFIDGET</h3>
-        <p>3D printed fidgets designed for calm, focus, and that “just one more spin” feeling.</p>
+        <p>3D printed fidget toys with tuned motion, clean lines, and satisfying feel.</p>
       </div>
       <div>
         <h4>Links</h4>
@@ -213,8 +213,8 @@
       </div>
       <div>
         <h4>Stay in the loop</h4>
-        <p>Get notified when new satisfying designs drop.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed. See you in the flow.');">
+        <p>Get updates when new designs and colourways drop.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed.');">
           <input type="email" placeholder="you@domain.com" required />
           <button type="submit">JOIN</button>
         </form>
