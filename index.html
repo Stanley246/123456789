@@ -8,7 +8,7 @@
   <script defer src="script.js"></script>
 
   <style>
-    /* Sleeker button styling without changing colours */
+    /* Sleeker buttons without changing colours */
     .btn-primary {
       border-radius: 14px;
       padding: 0.85rem 1.6rem;
@@ -25,6 +25,53 @@
       height: 100%;
       object-fit: cover;
       border-radius: inherit;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .modal-box {
+      background: #0a0a12;
+      border: 1px solid #262636;
+      border-radius: 14px;
+      width: 90%;
+      max-width: 480px;
+      padding: 1.4rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      animation: pop 0.25s ease-out;
+    }
+    @keyframes pop {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-box img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      float: right;
+      background: transparent;
+      border: none;
+      color: #ff0044;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .spec-list {
+      margin: 0.6rem 0 1rem;
+      padding-left: 1.2rem;
+      color: #9a9a9a;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -133,5 +180,59 @@
     </div>
   </div>
   <div class="cart-backdrop" id="cartBackdrop"></div>
+
+  <!-- PRODUCT DETAILS MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img id="modalImg" src="">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+
+      <h3 style="margin-top:1rem;font-size:0.9rem;letter-spacing:0.14em;color:#ff3366;">Specifications</h3>
+      <ul class="spec-list" id="modalSpecs"></ul>
+
+      <button class="btn-primary btn-full" id="modalAdd">ADD TO CART</button>
+    </div>
+  </div>
+
+  <script>
+    /* Modal logic (works with existing product data) */
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalClose = document.getElementById("modalClose");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalSpecs = document.getElementById("modalSpecs");
+    const modalAdd = document.getElementById("modalAdd");
+
+    let modalProductId = null;
+
+    function openModal(product) {
+      modalProductId = product.id;
+      modalImg.src = product.image;
+      modalTitle.textContent = product.name;
+      modalDesc.textContent = product.description;
+
+      modalSpecs.innerHTML = "";
+      product.specs.forEach(s => {
+        const li = document.createElement("li");
+        li.textContent = s;
+        modalSpecs.appendChild(li);
+      });
+
+      modalBackdrop.classList.add("open");
+    }
+
+    modalClose.addEventListener("click", () => {
+      modalBackdrop.classList.remove("open");
+    });
+
+    modalAdd.addEventListener("click", () => {
+      addToCart(modalProductId);
+      modalBackdrop.classList.remove("open");
+    });
+  </script>
+
 </body>
 </html>
