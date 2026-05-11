@@ -48,6 +48,22 @@ const PRODUCTS = [
     tag: "Classic",
     description: "Grid‑pattern cube with pressable tiles and micro‑texture edges for constant micro‑movements."
   }
+{
+  id: "rf-spin-vortex",
+  name: "Vortex Spinner",
+  price: 24.0,
+  category: "spinner",
+  tag: "Featured",
+  description: "Tri‑arm spinner with aggressive knurling and a ceramic bearing core.",
+  image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=600&q=80",
+  specs: [
+    "Material: PLA+ reinforced",
+    "Bearing: Hybrid ceramic",
+    "Weight: 42g",
+    "Spin time: 2–4 minutes"
+  ]
+}
+
 ];
 
 let cart = [];
